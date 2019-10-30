@@ -23,6 +23,12 @@ yarn-error.log*
 
 *.idea
 _material/
+.dockerignore
+docker-compose.yml
+Dockerfile
+Dockerfile_com_container_nginx
+Dockerfile_opt_1_com_start
+nginx.conf
 
  Created by https://www.gitignore.io/api/pycharm
 # Edit at https://www.gitignore.io/?templates=pycharm
