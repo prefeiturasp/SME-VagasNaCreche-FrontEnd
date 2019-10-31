@@ -25,7 +25,6 @@ yarn-error.log*
 _material/
 .dockerignore
 docker-compose.yml
-Dockerfile
 Dockerfile_com_container_nginx
 Dockerfile_opt_1_com_start
 nginx.conf
