@@ -1,10 +1,11 @@
 import React from 'react';
+import HelloWorldApi from  './componentes/HelloWorldApi'
 
 function App() {
   return (
     <section role="main">
       <section className="container">
-        <h1>Bem-Vindo ao Vaga na Creche</h1>
+        <HelloWorldApi/>
 
       </section>
 
