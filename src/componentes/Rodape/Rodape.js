@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import logoPrefeitura from "../../img/logo_sp.png";
-import "./style.scss";
+import "./rodape.scss";
 
 export default class Rodape extends Component {
   selectHref(value) {

@@ -1,5 +1,4 @@
 import React from 'react';
-
 import Routes from './componentes/Routes/Routes'
 import MenuAcessibilidade from './componentes/Menu/MenuAcessibilidade'
 import MenuPrincipal from './componentes/Menu/MenuPrincipal'
@@ -43,9 +42,10 @@ class App extends React.Component {
   }
 
     render() {
+        const { alterarFonte, alterarContraste } = this.state;
         return (
-            <section role="main">
-                <MenuAcessibilidade/>
+            <section role="main" className={`${alterarFonte && "fonte-maior"} ${alterarContraste && "alto-contraste"}`}>
+                <MenuAcessibilidade alterarFonte={this.alterarFonte} alterarContraste={this.alterarContraste}/>
                 <MenuPrincipal/>
                 <section className="container">
                     <Routes/>

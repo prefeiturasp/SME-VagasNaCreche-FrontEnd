@@ -6,7 +6,7 @@ import "./menu-acessibilidade.scss";
 
 class MenuAcessibilidade extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
     }
 
     render() {
@@ -14,7 +14,6 @@ class MenuAcessibilidade extends React.Component {
             alterarFonte,
             alterarContraste,
             focusBusca,
-            esconderLinkBuscaEscola
         } = this.props;
         return (
             <div>
