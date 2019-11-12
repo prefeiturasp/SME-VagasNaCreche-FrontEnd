@@ -5,9 +5,6 @@ import {faFacebookSquare, faInstagram, faTwitter, faYoutube} from "@fortawesome/
 import "./menu-acessibilidade.scss";
 
 class MenuAcessibilidade extends React.Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         const {

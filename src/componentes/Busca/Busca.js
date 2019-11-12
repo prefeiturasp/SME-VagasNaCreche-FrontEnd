@@ -1,9 +1,8 @@
 import React from 'react';
 import Axios from 'axios'
 
-import GetMesNascimento from './GetMesNascimento';
-import GetAnoNascimento from './GetAnoNascimento'
 import calculatePreschoolGroup from './calculatePreschoolGroup'
+import SelectData from './SelectData'
 
 class Busca extends React.Component {
     constructor(props) {
@@ -91,36 +90,11 @@ class Busca extends React.Component {
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-row">
 
-                            <div className="form-group col-md-3">
-                                <label htmlFor="mes_nascimento" className="cor-azul pl-2">Selecione o mês de nascimento *</label>
-
-                                <select
-                                    id="mes_nascimento"
-                                    className="mes_nascimento_home form-control form-control-lg rounded-pill shadow"
-                                    /*onChange={this.mesAniversarioChange.bind(this)}*/
-                                    onChange={(event) => this.setAtributosCampos('mes_aniversario', event.target.value)}
-                                    defaultValue={this.state.mes_aniversario}
-                                >
-                                    <option value={undefined}>Selecione um mês</option>
-                                    <GetMesNascimento/>
-                                </select>
-                            </div>
-
-
-                            <div className="form-group col-md-3">
-                                <label htmlFor="mes_nascimento" className="cor-azul pl-2">Selecione o mês de nascimento *</label>
-                                <select
-                                    id="ano_nascimento"
-                                    className="mes_nascimento_home form-control form-control-lg rounded-pill shadow"
-                                    /*onChange={this.anoAniversarioChange.bind(this)}*/
-                                    onChange={(event) => this.setAtributosCampos('ano_aniversario', event.target.value)}
-                                    defaultValue={this.state.ano_aniversario}
-                                >
-                                    <option value={undefined}>Selecione um ano</option>
-                                    <GetAnoNascimento/>
-                                </select>
-                            </div>
-
+                            <SelectData
+                            mes_aniversario={this.state.mes_aniversario}
+                            ano_aniversario={this.state.ano_aniversario}
+                            onChange={this.setAtributosCampos}
+                            />
 
                             <div className="form-group col-md-4">
                                 <label htmlFor="endereco" className="cor-azul pl-2">Digite o Endereço:</label>
@@ -130,6 +104,8 @@ class Busca extends React.Component {
                             <div className="form-group col-md-2">
                                 <button onClick={this.mostraLatitudeLongitude.bind(this)} type="button" className={this.state.btn_css} disabled={this.state.btn_disabled}>Consultar</button>
                             </div>
+
+
                         </div>
                     </form>
                 </div>
