@@ -47,9 +47,7 @@ class App extends React.Component {
             <section role="main" className={`${alterarFonte && "fonte-maior"} ${alterarContraste && "alto-contraste"}`}>
                 <MenuAcessibilidade alterarFonte={this.alterarFonte} alterarContraste={this.alterarContraste}/>
                 <MenuPrincipal/>
-                <section className="container">
-                    <Routes/>
-                </section>
+                <Routes/>
                 <Rodape/>
             </section>
 

@@ -40,6 +40,26 @@ body {
   font-size: 16px;
 }
 
+.cor-azul {
+    color: $corAzulPortal;
+  }
+
+.btn-enviar-home{
+  margin-top: 31px;
+}
+
+.btn-success {
+  color: #fff;
+  background-color: #9BBA54;
+  border-color: #9BBA54;
+}
+
+.btn-success:hover {
+  color: #fff;
+  background-color: #738E34;;
+  border-color: #738E34;;
+}
+
 // Home
 
 .busca-escolas {
@@ -47,16 +67,20 @@ body {
   background-blend-mode: lighten;
   background-size: cover;
   color: $corCinzaHome;
-  height: 490px;
+  min-height: 490px;
 
   .conteudo {
-    margin: 0 auto;
+    margin: 80px auto;
     z-index: 1;
     width: auto;
 
     h2 {
       font-size: 30px;
       font-weight: bold;
+    }
+
+    .texto-home{
+      margin-top: 25px;
     }
 
     .busca {
@@ -73,6 +97,10 @@ body {
       .rounded-bottom-0 {
         border-bottom-left-radius: 0 !important;
         border-bottom-right-radius: 0 !important;
+      }
+
+      select.mes_nascimento_home option{
+
       }
     }
 
