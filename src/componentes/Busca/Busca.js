@@ -1,8 +1,9 @@
 import React from 'react';
 import Axios from 'axios'
-
 import calculatePreschoolGroup from './calculatePreschoolGroup'
 import SelectData from './SelectData'
+
+const URL_API_ENDERECO = process.env.REACT_APP_API_ENDERECO;
 
 class Busca extends React.Component {
     constructor(props) {
@@ -67,7 +68,7 @@ class Busca extends React.Component {
 
         const endereco_pesquisado = event.target.value;
         this.setState({endereco: endereco_pesquisado});
-        Axios.get(`http://10.49.23.37:4000/v1/search?text=${endereco_pesquisado}&size=10&boundary.gid=whosonfirst:locality:101965533`)
+        Axios.get(`${URL_API_ENDERECO}/search?text=${endereco_pesquisado}&size=10&boundary.gid=whosonfirst:locality:101965533`)
             .then(resposta => {
                 this.setState({enderecos_retornados: resposta.data.features})
                 console.log(this.state.enderecos_retornados)

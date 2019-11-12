@@ -1,6 +1,7 @@
 import React from 'react'
 import imgCeus from '../../img/cei_10.jpg'
 import imgPhone from '../../img/phone.png'
+const URL_VIDEO = process.env.REACT_APP_URL_VIDEO;
 
 const BlocosDeConteudo = () => (
 
@@ -18,7 +19,7 @@ const BlocosDeConteudo = () => (
                     </div>
                     <div className="col-12 offset-md-2 col-md-5">
                         <div className="embed-responsive embed-responsive-16by9">
-                            <iframe title="Vídeo sobre o Vaga Na Creche" src="https://www.youtube.com/embed/iGzgeH-H-Zo" frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                            <iframe title="Vídeo sobre o Vaga Na Creche" src={URL_VIDEO} frameBorder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
                         </div>
 
                     </div>
