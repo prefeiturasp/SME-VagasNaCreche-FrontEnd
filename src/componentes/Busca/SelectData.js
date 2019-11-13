@@ -8,7 +8,7 @@ class SelectData extends React.Component {
         return (
             <div className="col-12 col-md-6">
                 <div className="row">
-                    <div className="form-group col-md-6">
+                    <div className="form-group col-md-6 pr-1">
                         <label htmlFor="mes_nascimento" className="cor-azul pl-2">Selecione o mês de nascimento *</label>
                         <select
                             id="mes_nascimento"
@@ -22,7 +22,7 @@ class SelectData extends React.Component {
                         </select>
                     </div>
 
-                    <div className="form-group col-md-6">
+                    <div className="form-group col-md-6 pl-1">
                         <label htmlFor="mes_nascimento" className="cor-azul pl-2">Selecione o mês de nascimento *</label>
                         <select
                             id="ano_nascimento"

@@ -1,9 +1,13 @@
 import React from 'react';
 import Axios from 'axios'
-import calculatePreschoolGroup from './calculatePreschoolGroup'
-import SelectData from './SelectData'
+import {Link} from "react-router-dom";
+
+import calculaSerieEnsino from './CalculaSerieEnsino';
+import SelectData from './SelectData';
 
 const URL_API_ENDERECO = process.env.REACT_APP_API_ENDERECO;
+
+//http://127.0.1.1/api/fila-da-creche/espera_escola_raio/-23.570077/-46.568318/1
 
 class Busca extends React.Component {
     constructor(props) {
@@ -17,11 +21,21 @@ class Busca extends React.Component {
             mostraLatitudeLongitude: false,
             mes_aniversario: undefined,
             ano_aniversario: undefined,
+            dc_serie_ensino: '',
+            serie: '',
             btn_disabled: 'disabled',
-            btn_css: 'btn btn-secondary btn-lg rounded-pill shadow btn-enviar-home'
+            btn_css: 'btn btn-secondary btn-lg rounded-pill shadow btn-enviar-home',
+            lista_escolas_raio_serie: [],
+            msg_erro: null,
         };
 
         this.setAtributosCampos = this.setAtributosCampos.bind(this);
+    }
+
+    trataErro(msg_erro) {
+        this.setState({msg_erro: msg_erro});
+        this.setState({btn_disabled: 'disabled'});
+        this.setState({btn_css: 'btn btn-secondary btn-lg rounded-pill shadow btn-enviar-home'})
     }
 
     setAtributosCampos = (attribute, value) => {
@@ -35,29 +49,30 @@ class Busca extends React.Component {
     setAge() {
         this.setState({btn_disabled: ''});
         this.setState({btn_css: 'btn btn-success btn-lg rounded-pill shadow btn-enviar-home'});
+        this.setState({msg_erro: null});
         const monthOfBirth = parseInt(this.state.mes_aniversario, 10);
         const yearOfBirth = parseInt(this.state.ano_aniversario, 10);
-        const preschoolGroup = calculatePreschoolGroup(monthOfBirth, yearOfBirth);
-        //const ageMsg = composeDateOfBirthMsg(monthOfBirth, yearOfBirth);
-        const state = {
-            preschoolGroup: preschoolGroup,
-            preschoolGroupName: preschoolGroup.dc_serie_ensino,
-            preschoolGroupCode: preschoolGroup.serie,
-            //ageMsg: ageMsg,
-        };
+        const preschoolGroup = calculaSerieEnsino(monthOfBirth, yearOfBirth);
+
         if (preschoolGroup.error) {
-            state.preeschoolCalcError = true;
-        } else {
-            state.preeschoolCalcError = false;
+            this.trataErro('A criança não está em idade de creche. Tente para outra idade.');
         }
-        this.setState(state);
 
+        this.setState({dc_serie_ensino: preschoolGroup.dc_serie_ensino});
+        this.setState({serie: preschoolGroup.serie})
 
-        console.log("Ollyver 01: ", this.state.mes_aniversario);
-        console.log("Ollyver 02: ", this.state.ano_aniversario);
         console.log("Ollyver 03: ", preschoolGroup);
         console.log("Ollyver 04: ", preschoolGroup.dc_serie_ensino);
         console.log("Ollyver 05: ", preschoolGroup.serie);
+    }
+
+    getEscolasRaioSerie() {
+        console.log("Entrei getEscolasRaioSerie");
+        Axios.get(`${URL_API_ENDERECO}/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`)
+            .then(resposta => {
+                this.setState({lista_escolas_raio_serie: resposta});
+                console.log("Entrei getEscolasRaioSerie 02 | ", resposta);
+            });
     }
 
     mostraLatitudeLongitude() {
@@ -71,16 +86,17 @@ class Busca extends React.Component {
         Axios.get(`${URL_API_ENDERECO}/search?text=${endereco_pesquisado}&size=10&boundary.gid=whosonfirst:locality:101965533`)
             .then(resposta => {
                 this.setState({enderecos_retornados: resposta.data.features})
-                console.log(this.state.enderecos_retornados)
             });
+    }
+
+    handleSubmit() {
+
     }
 
     setInputEndereco(logradouro, longitude, latitude) {
         this.setState({endereco: logradouro});
         this.setState({longitude: longitude});
         this.setState({latitude: latitude});
-        console.log("Longitude: ", longitude);
-        console.log("Latitude: ", latitude);
     }
 
     render() {
@@ -92,24 +108,47 @@ class Busca extends React.Component {
                         <div className="form-row">
 
                             <SelectData
-                            mes_aniversario={this.state.mes_aniversario}
-                            ano_aniversario={this.state.ano_aniversario}
-                            onChange={this.setAtributosCampos}
+                                mes_aniversario={this.state.mes_aniversario}
+                                ano_aniversario={this.state.ano_aniversario}
+                                onChange={this.setAtributosCampos}
                             />
 
                             <div className="form-group col-md-4">
                                 <label htmlFor="endereco" className="cor-azul pl-2">Digite o Endereço:</label>
-                                <input id="endereco" className="form-control form-control-lg rounded-pill shadow pt-3 pb-3" type="text" value={this.state.endereco} onChange={this.handleChange.bind(this)}/>
+                                {/*<input id="endereco" className="form-control form-control-lg rounded-pill shadow pt-3 pb-3" type="text" value={this.state.endereco} onChange={this.handleChange.bind(this)}/>*/}
+                                <input onChange={this.getEscolasRaioSerie.bind(this)} id="endereco" className="form-control form-control-lg rounded-pill shadow pt-3 pb-3" type="text"/>
                             </div>
 
                             <div className="form-group col-md-2">
-                                <button onClick={this.mostraLatitudeLongitude.bind(this)} type="button" className={this.state.btn_css} disabled={this.state.btn_disabled}>Consultar</button>
+                                {/*<button onClick={this.mostraLatitudeLongitude.bind(this)} type="button" className={this.state.btn_css} disabled={this.state.btn_disabled}>Consultar</button>*/}
+                                <Link to={{
+                                    pathname:"/creches",
+                                    params: {
+                                        lista_escolas_raio_serie: this.state.lista_escolas_raio_serie,
+                                        dc_serie_ensino: this.state.dc_serie_ensino,
+                                        serie: this.state.serie,
+                                      }
+                                }}>
+
+                                    <button
+                                        //onClick={this.getEscolasRaioSerie.bind(this)}
+                                        type="button" className={this.state.btn_css}
+                                        disabled={this.state.btn_disabled}>
+                                        Consultar
+                                    </button>
+                                </Link>
                             </div>
 
 
                         </div>
                     </form>
                 </div>
+
+                {this.state.msg_erro ? (
+                    <div className="col-12 text-center m-auto">
+                        <h4>{this.state.msg_erro}</h4>
+                    </div>
+                ) : null}
 
                 {this.state.mostraLatitudeLongitude ? (
                     <div id='mostra-latitude-longitude' className="col-xs-12 col-md-6">

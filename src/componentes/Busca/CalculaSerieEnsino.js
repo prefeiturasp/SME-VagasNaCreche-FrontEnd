@@ -1,4 +1,4 @@
-export default function calculatePreschoolGroup(monthOfBirth, yearOfBirth) {
+export default function calculaSerieEnsino(monthOfBirth, yearOfBirth) {
   const checkAge = Date.parse(monthOfBirth + "/15/" + yearOfBirth); // set it to middle of month
   const currentYear = new Date().getFullYear();
   const ageRanges = [
