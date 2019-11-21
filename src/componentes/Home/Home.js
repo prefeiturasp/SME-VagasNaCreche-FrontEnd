@@ -23,9 +23,9 @@ const Home = () => (
                                     <p className="fonte-16 texto-home">Para conhecer os Centros de Educação Infantil mais próximos com turmas que atendem sua necessidade, informe abaixo o mês e ano de nascimento da criança e, também, o endereço para o qual quer fazer a consulta</p>
                                 </div>
                             </div>
-                            <div id="busca" className="col-lg-12 col-sm-12 mt-5">
-                                <Busca/>
-                            </div>
+
+                            <Busca/>
+
                         </div>
                     </div>
                 </div>

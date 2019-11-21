@@ -8,21 +8,22 @@ class SelectData extends React.Component {
         return (
             <div className="col-12 col-md-6">
                 <div className="row">
-                    <div className="form-group col-md-6 pr-1">
+                    <div className="form-group col-md-6 pr-md-1">
                         <label htmlFor="mes_nascimento" className="cor-azul pl-2">Selecione o mês de nascimento *</label>
                         <select
                             id="mes_nascimento"
                             className="mes_nascimento_home form-control form-control-lg rounded-pill shadow"
                             /*onChange={this.mesAniversarioChange.bind(this)}*/
-                            onChange={(event) => this.props.onChange('mes_aniversario', event.target.value)}
+
                             defaultValue={this.props.mes_aniversario}
+                            onChange={(event) => this.props.onChange('mes_aniversario', event.target.value)}
                         >
                             <option value={undefined}>Selecione um mês</option>
                             <GetMesNascimento/>
                         </select>
                     </div>
 
-                    <div className="form-group col-md-6 pl-1">
+                    <div className="form-group col-md-6 pl-md-1">
                         <label htmlFor="mes_nascimento" className="cor-azul pl-2">Selecione o mês de nascimento *</label>
                         <select
                             id="ano_nascimento"
