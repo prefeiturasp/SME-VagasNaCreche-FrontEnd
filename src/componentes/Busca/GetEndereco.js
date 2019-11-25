@@ -12,9 +12,7 @@ class GetEndereco extends React.Component {
                         <label htmlFor="endereco" className="cor-azul pl-2">Digite o Endereço:</label>
                         <input id="endereco" className="form-control form-control-lg rounded-pill shadow pt-3 pb-3" type="text"
                                value={this.props.endereco}
-                            //onChange={this.props.handleChange}
-                            //onChange={(event) => this.props.onChange(this)}
-                               onChange={(event) => this.props.onChange(event.target.value)}
+                               onChange={(event) => this.props.onChange(event)}
                                disabled={this.props.inputEnderecoDisabled}
                         />
                     </div>

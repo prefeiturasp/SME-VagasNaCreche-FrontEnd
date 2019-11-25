@@ -4,6 +4,8 @@ import {Link} from "react-router-dom";
 
 import calculaSerieEnsino from './CalculaSerieEnsino';
 import SelectData from './SelectData';
+import GetEndereco from "./GetEndereco";
+import GetEnderecoAutocomplete from './GetEnderecoAutocomplete'
 
 const URL_API_ENDERECO = process.env.REACT_APP_API_ENDERECO;
 
@@ -27,6 +29,8 @@ class Busca extends React.Component {
         };
 
         this.setAtributosCampos = this.setAtributosCampos.bind(this);
+        this.setInputEndereco = this.setInputEndereco.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     trataErro(msg_erro) {
@@ -66,7 +70,6 @@ class Busca extends React.Component {
 
         // Para montar o autocomplete
         const qtde_caracteres = event.target.value.length;
-
         const endereco_pesquisado = event.target.value;
         const endereco_api_consulta = `${URL_API_ENDERECO}/v1/search?text=${endereco_pesquisado}&size=10&boundary.gid=whosonfirst:locality:101965533`
         this.setState({endereco: endereco_pesquisado});
@@ -76,6 +79,7 @@ class Busca extends React.Component {
 
             Axios.get(endereco_api_consulta)
                 .then(resposta => {
+
                     this.setState({enderecos_retornados: resposta.data.features});
 
                     if (resposta.data.features.length > 0) {
@@ -94,7 +98,7 @@ class Busca extends React.Component {
         }
     }
 
-    setInputEndereco(logradouro, longitude, latitude) {
+    setInputEndereco = (logradouro, longitude, latitude) => {
         this.setState({endereco: logradouro});
         this.setState({longitude: longitude});
         this.setState({latitude: latitude});
@@ -114,11 +118,16 @@ class Busca extends React.Component {
                             onChange={this.setAtributosCampos}
                         />
 
-                        <div className="form-group col-md-4">
+                        <GetEndereco
+                            endereco={this.state.endereco}
+                            onChange={this.handleChange}
+                            inputEnderecoDisabled={this.state.input_endereco_disabled}
+                        />
+
+{/*                        <div className="form-group col-md-4">
                             <label htmlFor="endereco" className="cor-azul pl-2">Digite o Endereço:</label>
                             <input id="endereco" className="form-control form-control-lg rounded-pill shadow pt-3 pb-3" type="text" value={this.state.endereco} onChange={this.handleChange.bind(this)} disabled={this.state.input_endereco_disabled}/>
-                            {/*<input onChange={this.getEscolasRaioSerie.bind(this)} id="endereco" className="form-control form-control-lg rounded-pill shadow pt-3 pb-3" type="text"/>*/}
-                        </div>
+                        </div>*/}
 
                         <div className="form-group col-md-2 text-center text-md-left">
                             {/*<button onClick={this.mostraLatitudeLongitude.bind(this)} type="button" className={this.state.btn_css} disabled={this.state.btn_disabled}>Consultar</button>*/}
@@ -155,27 +164,11 @@ class Busca extends React.Component {
 
                 <div className="w-100"></div>
 
-                <div className='row'>
-                    {this.state.enderecos_retornados.length > 0 ? (
-                        <div className='col-12 col-md-6 offset-md-6'>
+                <GetEnderecoAutocomplete
+                    enderecos_retornados = {this.state.enderecos_retornados}
+                    setInputEndereco = {this.setInputEndereco}
+                />
 
-                            <ul className="retorno-endereco pl-0">
-                                <li className="list-group-item list-group-item-secondary border-0 rounded-0 mb-0">
-                                    Logradouros
-                                </li>
-                                {this.state.enderecos_retornados.map((logradouro, indice) => {
-                                    return (
-                                        <li key={indice} className="list-group-item list-group-item-action border-0" onClick={this.setInputEndereco.bind(this, logradouro.properties.name, logradouro.geometry.coordinates[0], logradouro.geometry.coordinates[1])}>
-                                            {/*{logradouro.properties.label}*/}
-                                            {logradouro.properties.name}
-                                        </li>
-                                    );
-                                })}
-                            </ul>
-                        </div>
-                    ) : null}
-
-                </div>
 
             </div>
 

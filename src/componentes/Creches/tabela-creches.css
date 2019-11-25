@@ -1,0 +1,9 @@
+.icon-tabela-creches path {
+    fill: #00A6E2;
+}
+
+@media (min-width: 991px) {
+    .tabela-escolas-div {
+        height: 803px;
+    }
+}

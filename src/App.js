@@ -18,6 +18,9 @@ class App extends React.Component {
                 (localStorage.getItem("alterarContraste") &&
                     localStorage.getItem("alterarContraste") === "true") ||
                 false,
+
+            esconderLinkBuscaEscola:true
+
         };
         this.alterarFonte = this.alterarFonte.bind(this);
         this.alterarContraste = this.alterarContraste.bind(this);
@@ -46,7 +49,7 @@ class App extends React.Component {
         return (
             <section role="main" className={`${alterarFonte && "fonte-maior"} ${alterarContraste && "alto-contraste"}`}>
                 <MenuAcessibilidade alterarFonte={this.alterarFonte} alterarContraste={this.alterarContraste}/>
-                <MenuPrincipal/>
+                <MenuPrincipal esconderLinkBuscaEscola = {this.state.esconderLinkBuscaEscola}/>
                 <Routes/>
                 <Rodape/>
             </section>
