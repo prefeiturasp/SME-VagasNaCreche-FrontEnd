@@ -49,7 +49,7 @@ class Creches extends React.Component {
     }
 
     componentDidMount() {
-        Axios.get(`${URL_API_VAGANACRECHE_HOM}/fila-da-creche/espera_escola_raio/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`)
+        Axios.get(`${URL_API_VAGANACRECHE_HOM}/fila/espera_escola_raio/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`)
             .then(resposta => {
                 this.setState({lista_escolas_raio_serie: resposta.data.escolas});
                 localStorage.setItem('lista_escolas_raio_serie', resposta.data.escolas);
