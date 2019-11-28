@@ -24,6 +24,7 @@
 
 body {
   @include roboto-sans;
+  letter-spacing: 0.015em;
 }
 
 // Fontes
@@ -255,14 +256,7 @@ h2 {
     .leaflet-container {
       height: 955px;
     }
-    @media (max-width: 991px) {
-      margin-left: 10%;
-      width: 80%;
-      height: 10%;
-      .leaflet-container {
-        height: 500px;
-      }
-    }
+
 
   }
 }

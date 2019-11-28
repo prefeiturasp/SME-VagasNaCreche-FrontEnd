@@ -1,0 +1,53 @@
+#mes_nascimento:hover, #ano_nascimento:hover{
+    cursor: pointer;
+}
+
+select {
+
+text-align-last: center;
+padding-right: 29px;
+
+}
+
+.endereco-autocomplete{
+    position: absolute;
+    border-radius: 0 0 5px 5px ;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+    border: 1px solid #ced4da;
+    border-top: none;
+    text-align: left;
+}
+
+.endereco-autocomplete li{
+    cursor: pointer;
+    list-style-type: none;
+}
+
+.endereco-autocomplete li a{
+    color: #495057;
+}
+
+.endereco-autocomplete li a:hover{
+    text-decoration: none;
+}
+
+.input_endereco_round_css{
+    border-radius: 1rem 1rem 0 0 !important;
+    border-bottom: none;
+}
+
+.input_endereco_round_css_recoloca_bordas{
+    border-radius: 50rem !important;
+}
+
+@media only screen and (max-width: 992px) {
+    .endereco-autocomplete {
+        position: relative;
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .endereco-autocomplete {
+        width: 97.3%;
+    }
+}

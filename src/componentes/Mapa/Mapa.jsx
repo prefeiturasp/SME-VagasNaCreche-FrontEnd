@@ -65,7 +65,7 @@ export default class Mapa extends Component {
 
     render() {
         return (
-            <div className="mapa h-80 w-80">
+            <div className="mapa h-80">
                 <Map
                     ref="map"
                     center={[this.state.lat, this.state.lng]}
@@ -82,9 +82,9 @@ export default class Mapa extends Component {
                                 position={[marcador.latitude, marcador.longitude]}
                             >
                                 <Popup>
-                                    <p className="fonte-14 mb-1"><strong>{marcador.escola.escola}</strong></p>
-                                    <p className="fonte-14 mb-1 mt-1"> Há {marcador.escola.total} crianças aguardando no {this.state.dc_serie_ensino}</p>
-                                    <p className="fonte-14 mt-0">
+                                    <p className="fonte-14 mb-0"><strong>{marcador.escola.escola}</strong></p>
+                                    <p className="fonte-12 mb-1 mt-0"> Há {marcador.escola.total} crianças aguardando no {this.state.dc_serie_ensino}</p>
+                                    <p className="fonte-14 mt-3">
                                         <strong>Endereço: </strong>{marcador.escola.endereco_completo}</p>
 
                                     {marcador.escola.telefones ? (

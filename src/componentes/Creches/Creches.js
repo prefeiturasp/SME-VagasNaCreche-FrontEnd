@@ -1,10 +1,13 @@
 import React from 'react'
 import Axios from "axios";
 import PubSub from 'pubsub-js'
+import {Link} from "react-router-dom";
 
 import BarraSuperior from '../../utils/BarraSuperior'
 import TabelaCreches from './TabelaCreches'
+import Loading from '../../utils/Loading'
 import Mapa from '../Mapa/Mapa'
+import './creche.css'
 
 const URL_API_VAGANACRECHE_HOM = process.env.REACT_APP_API_VAGANACRECHE_HOM;
 
@@ -22,7 +25,9 @@ class Creches extends React.Component {
             dt_atualizacao: new Date(),
             fila_de_espera: 0,
             qtde_escolas: 0,
-            esconderLinkBuscaEscola:true
+            esconderLinkBuscaEscola: true,
+            carregado: undefined,
+            erro_carregamento_lista_de_escolas:false,
         };
 
         PubSub.publish("mostraLinkHome", true);
@@ -49,13 +54,18 @@ class Creches extends React.Component {
     }
 
     componentDidMount() {
+
         Axios.get(`${URL_API_VAGANACRECHE_HOM}/fila/espera_escola_raio/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`)
             .then(resposta => {
                 this.setState({lista_escolas_raio_serie: resposta.data.escolas});
-                localStorage.setItem('lista_escolas_raio_serie', resposta.data.escolas);
                 this.setState({qtde_escolas: resposta.data.escolas.length});
                 this.setState({dt_atualizacao: resposta.data.dt_atualizacao});
                 this.setState({fila_de_espera: resposta.data.espera});
+
+                this.setState({carregado: true});
+            }).catch(error => {
+                this.setState({carregado: true});
+                this.setState({erro_carregamento_lista_de_escolas: true});
             });
     }
 
@@ -72,33 +82,70 @@ class Creches extends React.Component {
 
     render() {
         const data_formatada = this.convertDateTime(this.state.dt_atualizacao)
+
         return (
             <div>
-                <BarraSuperior texto="Centros de Educação Infantil mais próximos" filtro={true}/>
+
+                <BarraSuperior texto="Centros de Educação Infantil mais próximos" filtro={false}/>
+
                 <div className="container">
-                    <div className="row">
-                        <div className="col-12 col-md-6 mt-5">
-                            <p className="fonte-16">Há <strong>{this.state.fila_de_espera}</strong> crianças aguardando vaga no <strong>{this.state.dc_serie_ensino}</strong>, a serem distribuídas nos <strong>{this.state.qtde_escolas}</strong> Centros de Educação Infantil (CEIs) perto de <strong>{this.state.endereco}</strong>
-                            </p>
-                            <p className="fonte-16">Estes dados foram atualizados em {data_formatada}</p>
-                            {this.state.lista_escolas_raio_serie ? (
-                                <TabelaCreches
-                                    lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
-                                    atualizarMapa={this.atualizarMapa}
-                                />
-                            ) : null}
-                        </div>
-                        <div className="col-lg-6 col-sm-12 mapa-completo">
-                            {this.state.lista_escolas_raio_serie ? (
-                                <Mapa
-                                    lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
-                                    dc_serie_ensino={this.state.dc_serie_ensino}
-                                />
-                            ) : null}
 
+                    {!this.state.carregado ? (
+                        <Loading />
+                    ) :
+                        null
+                    }
 
+                    {this.state.lista_escolas_raio_serie ? (
+
+                            <div className="row">
+                                <div className="col-12 col-lg-6 mt-5">
+                                    <p className="fonte-16">Há <strong>{this.state.fila_de_espera}</strong> crianças
+                                        aguardando vaga no <strong>{this.state.dc_serie_ensino}</strong>, a serem
+                                        distribuídas nos <strong>{this.state.qtde_escolas}</strong> Centros de Educação
+                                        Infantil (CEIs) perto de <strong>{this.state.endereco}</strong>
+                                    </p>
+                                    <p className="fonte-16">Estes dados foram atualizados em {data_formatada}</p>
+
+                                    <TabelaCreches
+                                        lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
+                                        atualizarMapa={this.atualizarMapa}
+                                    />
+
+                                </div>
+                                <div className="col-lg-6 col-lg-6 mapa-completo">
+                                    <Mapa
+                                        lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
+                                        dc_serie_ensino={this.state.dc_serie_ensino}
+                                    />
+
+                                </div>
+                            </div>
+
+                        ) : null }
+
+                    {this.state.erro_carregamento_lista_de_escolas ? (
+                        <div className="col-12 col-md-6 mt-5 mb-5">
+                            <p className="fonte-14">Não foi encontrado nenhum resultado. Por favor tente uma nova
+                                pesquisa</p>
+                            <Link
+                                to={{
+                                    pathname: "/",
+                                    params: {
+                                        dc_serie_ensino: this.state.dc_serie_ensino,
+                                        serie: this.state.serie,
+                                        endereco: this.state.endereco,
+                                        longitude: this.state.longitude,
+                                        latitude: this.state.latitude,
+                                    }
+                                }}>
+                                <button type="button" className="btn btn-outline-primary rounded-pill">Consultar
+                                    novamente
+                                </button>
+                            </Link>
                         </div>
-                    </div>
+                    ): null}
+
                 </div>
             </div>
         );

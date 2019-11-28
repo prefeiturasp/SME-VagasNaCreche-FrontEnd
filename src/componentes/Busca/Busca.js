@@ -4,7 +4,6 @@ import {Link} from "react-router-dom";
 
 import calculaSerieEnsino from './CalculaSerieEnsino';
 import SelectData from './SelectData';
-import GetEndereco from "./GetEndereco";
 import GetEnderecoAutocomplete from './GetEnderecoAutocomplete'
 
 const URL_API_ENDERECO = process.env.REACT_APP_API_ENDERECO;
@@ -15,6 +14,7 @@ class Busca extends React.Component {
 
         this.state = {
             endereco: '',
+            bairro: '',
             enderecos_retornados: [],
             latitude: '',
             longitude: '',
@@ -23,20 +23,23 @@ class Busca extends React.Component {
             dc_serie_ensino: '',
             serie: '',
             btn_disabled: 'disabled',
-            btn_css: 'btn btn-secondary btn-lg rounded-pill shadow btn-enviar-home',
+            btn_css: 'btn btn-secondary btn-lg rounded-pill shadow btn-enviar-home fonte-16 font-weight-bold pl-4 pr-4',
             input_endereco_disabled: 'disabled',
+            input_endereco_round_css: '',
             msg_erro: null,
+            popupVisible: '',
         };
 
         this.setAtributosCampos = this.setAtributosCampos.bind(this);
         this.setInputEndereco = this.setInputEndereco.bind(this);
         this.handleChange = this.handleChange.bind(this);
+
     }
 
     trataErro(msg_erro) {
         this.setState({msg_erro: msg_erro});
         this.setState({btn_disabled: 'disabled'});
-        this.setState({btn_css: 'btn btn-secondary btn-lg rounded-pill shadow btn-enviar-home'})
+        this.setState({btn_css: 'btn btn-secondary btn-lg rounded-pill shadow btn-enviar-home fonte-16 font-weight-bold pl-4 pr-4'})
     }
 
     setAtributosCampos = (attribute, value) => {
@@ -84,8 +87,11 @@ class Busca extends React.Component {
 
                     if (resposta.data.features.length > 0) {
 
+                        this.setState({input_endereco_round_css: ' input_endereco_round_css'})
+                        this.setState({popupVisible: 'd-md-block'})
+
                         this.setState({btn_disabled: ''});
-                        this.setState({btn_css: 'btn btn-success btn-lg rounded-pill shadow btn-enviar-home'});
+                        this.setState({btn_css: 'btn btn-success btn-lg rounded-pill shadow btn-enviar-home fonte-16 font-weight-bold pl-4 pr-4'});
                         this.setState({msg_erro: null});
 
                         this.setState({longitude: resposta.data.features[0].geometry.coordinates[0]})
@@ -98,19 +104,36 @@ class Busca extends React.Component {
         }
     }
 
-    setInputEndereco = (logradouro, longitude, latitude) => {
-        this.setState({endereco: logradouro});
+    setInputEndereco = (logradouro, bairro, longitude, latitude) => {
+
+        if (bairro){
+            this.setState({endereco: `${logradouro} - ${bairro}`})
+            this.setState({bairro: bairro});
+            localStorage.setItem('endereco', `${logradouro} - ${bairro}`);
+        }else {
+             this.setState({endereco: `${logradouro}`})
+            localStorage.setItem('endereco', `${logradouro}`);
+        }
+
+
         this.setState({longitude: longitude});
         this.setState({latitude: latitude});
-    }
+
+
+        localStorage.setItem('longitude', longitude);
+        localStorage.setItem('latitude', latitude);
+
+        this.setState({input_endereco_round_css: ''})
+        this.setState({popupVisible: 'd-none'})
+    };
 
     render() {
 
         return (
-            <div id="busca" className="col-lg-12 col-sm-12 mt-5">
+            <div id="busca" className="col-lg-12 col-sm-12 mt-5 pr-0 pl-0">
 
                 <form>
-                    <div className="form-row">
+                    <div className="form-row ml-lg-5">
 
                         <SelectData
                             mes_aniversario={this.state.mes_aniversario}
@@ -118,19 +141,18 @@ class Busca extends React.Component {
                             onChange={this.setAtributosCampos}
                         />
 
-                        <GetEndereco
+                        <GetEnderecoAutocomplete
                             endereco={this.state.endereco}
+                            bairro={this.state.bairro}
                             onChange={this.handleChange}
                             inputEnderecoDisabled={this.state.input_endereco_disabled}
+                            inputEnderecoRoundCss={this.state.input_endereco_round_css}
+                            enderecos_retornados={this.state.enderecos_retornados}
+                            setInputEndereco={this.setInputEndereco}
+                            popupVisible={this.state.popupVisible}
                         />
 
-{/*                        <div className="form-group col-md-4">
-                            <label htmlFor="endereco" className="cor-azul pl-2">Digite o Endereço:</label>
-                            <input id="endereco" className="form-control form-control-lg rounded-pill shadow pt-3 pb-3" type="text" value={this.state.endereco} onChange={this.handleChange.bind(this)} disabled={this.state.input_endereco_disabled}/>
-                        </div>*/}
-
-                        <div className="form-group col-md-2 text-center text-md-left">
-                            {/*<button onClick={this.mostraLatitudeLongitude.bind(this)} type="button" className={this.state.btn_css} disabled={this.state.btn_disabled}>Consultar</button>*/}
+                        <div className="form-group col-lg-2 text-center text-lg-left">
                             <Link
                                 to={{
                                     pathname: "/creches",
@@ -145,13 +167,12 @@ class Busca extends React.Component {
 
                                 <button
                                     type="button" className={this.state.btn_css}
-                                    disabled={this.state.btn_disabled}>
+                                    disabled={this.state.btn_disabled}
+                                >
                                     Consultar
                                 </button>
                             </Link>
                         </div>
-
-
                     </div>
                 </form>
 
@@ -160,15 +181,6 @@ class Busca extends React.Component {
                         <h4>{this.state.msg_erro}</h4>
                     </div>
                 ) : null}
-
-
-                <div className="w-100"></div>
-
-                <GetEnderecoAutocomplete
-                    enderecos_retornados = {this.state.enderecos_retornados}
-                    setInputEndereco = {this.setInputEndereco}
-                />
-
 
             </div>
 
