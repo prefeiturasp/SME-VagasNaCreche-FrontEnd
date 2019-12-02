@@ -3,8 +3,11 @@ import Routes from './componentes/Routes/Routes'
 import MenuAcessibilidade from './componentes/Menu/MenuAcessibilidade'
 import MenuPrincipal from './componentes/Menu/MenuPrincipal'
 import Rodape from './componentes/Rodape/Rodape'
-
 import "./styles/styles.scss";
+
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-149756375-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 class App extends React.Component {
     constructor(props) {
