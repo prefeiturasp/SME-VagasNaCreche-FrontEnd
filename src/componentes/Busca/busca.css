@@ -40,6 +40,10 @@ padding-right: 29px;
     border-radius: 50rem !important;
 }
 
+.texto-alert-dander{
+    color: #721c24;
+}
+
 @media only screen and (max-width: 992px) {
     .endereco-autocomplete {
         position: relative;

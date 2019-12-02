@@ -49,7 +49,8 @@ class GetEnderecoAutocomplete extends React.Component {
                 <div className="form-group text-center">
                     <label htmlFor="endereco" className="cor-azul mt-3 mt-lg-0">Digite o endereço que deseja consultar *</label>
                     <input id="endereco"
-                           className={"text-center form-control form-control-lg rounded-pill shadow pt-3 pb-3 fonte-14 " + this.props.inputEnderecoRoundCss + " " + this.state.input_endereco_round_css_recoloca_bordas}
+                           placeholder="Digite o nome da rua e o número"
+                           className={"text-center form-control form-control-lg rounded-pill shadow pt-3 pb-3 fonte-16 " + this.props.inputEnderecoRoundCss + " " + this.state.input_endereco_round_css_recoloca_bordas}
                            type="text"
                            value={this.props.endereco}
                            onChange={(event) => this.props.onChange(event)}

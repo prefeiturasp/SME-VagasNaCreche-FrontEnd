@@ -27,6 +27,8 @@ class Busca extends React.Component {
             input_endereco_disabled: 'disabled',
             input_endereco_round_css: '',
             msg_erro: null,
+            msg_erro_link: null,
+            msg_erro_link_url: null,
             popupVisible: '',
         };
 
@@ -36,8 +38,15 @@ class Busca extends React.Component {
 
     }
 
-    trataErro(msg_erro) {
+    trataErro(msg_erro, msg_erro_link, msg_erro_link_url) {
+
+        console.log("msg_erro | ", msg_erro)
+        console.log("msg_erro_link | ", msg_erro_link)
+        console.log("msg_erro_link_url | ", msg_erro_link_url)
+
         this.setState({msg_erro: msg_erro});
+        this.setState({msg_erro_link: msg_erro_link});
+        this.setState({msg_erro_link_url: msg_erro_link_url});
         this.setState({btn_disabled: 'disabled'});
         this.setState({btn_css: 'btn btn-secondary btn-lg rounded-pill shadow btn-enviar-home fonte-16 font-weight-bold pl-4 pr-4'})
     }
@@ -57,10 +66,12 @@ class Busca extends React.Component {
         const preschoolGroup = calculaSerieEnsino(monthOfBirth, yearOfBirth);
 
         if (preschoolGroup.error) {
-            this.trataErro('A criança não está em idade de creche. Tente para outra idade.');
+            this.trataErro('A criança já não está em idade de creche. Saiba como matriculá-la na Educação Básica ', '(ir para Solicitação de Vaga e Matrícula).', 'https://educacao.sme.prefeitura.sp.gov.br/coordenadoria-de-gestao-e-organizacao-educacional-coged/solicitacao-de-vaga-e-matricula/)');
             this.setState({input_endereco_disabled: 'disabled'})
         } else {
             this.setState({msg_erro: null})
+            this.setState({msg_erro_link: null})
+            this.setState({msg_erro_link_url: null})
         }
 
         this.setState({dc_serie_ensino: preschoolGroup.dc_serie_ensino});
@@ -93,6 +104,8 @@ class Busca extends React.Component {
                         this.setState({btn_disabled: ''});
                         this.setState({btn_css: 'btn btn-success btn-lg rounded-pill shadow btn-enviar-home fonte-16 font-weight-bold pl-4 pr-4'});
                         this.setState({msg_erro: null});
+                        this.setState({msg_erro_link: null});
+                        this.setState({msg_erro_link_url: null});
 
                         this.setState({longitude: resposta.data.features[0].geometry.coordinates[0]})
                         this.setState({latitude: resposta.data.features[0].geometry.coordinates[1]})
@@ -101,17 +114,20 @@ class Busca extends React.Component {
                         localStorage.setItem('latitude', resposta.data.features[0].geometry.coordinates[1]);
                     }
                 });
+        } else {
+            this.setState({btn_disabled: 'disabled'});
+            this.setState({btn_css: 'btn btn-secondary btn-lg rounded-pill shadow btn-enviar-home fonte-16 font-weight-bold pl-4 pr-4'})
         }
     }
 
     setInputEndereco = (logradouro, bairro, longitude, latitude) => {
 
-        if (bairro){
+        if (bairro) {
             this.setState({endereco: `${logradouro} - ${bairro}`})
             this.setState({bairro: bairro});
             localStorage.setItem('endereco', `${logradouro} - ${bairro}`);
-        }else {
-             this.setState({endereco: `${logradouro}`})
+        } else {
+            this.setState({endereco: `${logradouro}`})
             localStorage.setItem('endereco', `${logradouro}`);
         }
 
@@ -177,8 +193,11 @@ class Busca extends React.Component {
                 </form>
 
                 {this.state.msg_erro ? (
-                    <div className="col-12 text-center m-auto">
-                        <h4>{this.state.msg_erro}</h4>
+                    <div className="alert alert-danger ml-lg-5 mr-lg-5" role="alert">
+                        <strong>{this.state.msg_erro}</strong>
+                        {this.state.msg_erro_link && this.state.msg_erro_link_url ? (
+                            <strong><a className="texto-alert-dander" href={this.state.msg_erro_link_url}> {this.state.msg_erro_link}</a></strong>
+                        ) : null}
                     </div>
                 ) : null}
 
