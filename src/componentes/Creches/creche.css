@@ -13,16 +13,29 @@
 .td-tabela-creches-sem-borda{
     border: none !important;
 }
+.container-icon-tabela-creches{
 
-.container-icon-tabela-creches:hover{
-    background-color: #C2ECFC;
     border-top-left-radius: 35px;
     border-bottom-left-radius: 35px;
     border-bottom-right-radius: 35px;
     border-top-right-radius: 35px;
-    padding: 5px;
-    margin: -5px;
+
+
     cursor: pointer;
+    width: 2em;
+    height: 2em;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+.container-icon-tabela-creches:hover{
+    background-color: #C2ECFC;
+
+}
+
+.container-icon-tabela-creches svg{
+    height: 1em;
+    vertical-align: bottom;
 }
 
 .btn-outline-primary{

@@ -1,0 +1,8 @@
+select {
+    text-align-last: center;
+    padding-right: 29px;
+}
+
+#mes_nascimento:hover, #ano_nascimento:hover{
+    cursor: pointer;
+}

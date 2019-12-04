@@ -1,4 +1,5 @@
 import React from 'react'
+import './SelectData.css'
 import GetMesNascimento from './GetMesNascimento';
 import GetAnoNascimento from './GetAnoNascimento'
 
@@ -6,7 +7,7 @@ class SelectData extends React.Component {
 
     render() {
         return (
-            <div className="col-12 col-lg-6">
+
                 <div className="row">
                     <div className="form-group col-lg-6 pr-md-1 pl-md-2 text-center">
                         <label htmlFor="mes_nascimento" className="cor-azul">Selecione o mês de nascimento *</label>
@@ -26,7 +27,6 @@ class SelectData extends React.Component {
                         <select
                             id="ano_nascimento"
                             className="mes_nascimento_home form-control form-control-lg rounded-pill shadow fonte-16"
-                            /*onChange={this.anoAniversarioChange.bind(this)}*/
                             onChange={(event) => this.props.onChange('ano_aniversario', event.target.value)}
                             defaultValue={this.props.ano_aniversario}
                         >
@@ -35,7 +35,6 @@ class SelectData extends React.Component {
                         </select>
                     </div>
                 </div>
-            </div>
 
         );
     }

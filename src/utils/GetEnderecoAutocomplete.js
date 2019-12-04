@@ -1,5 +1,5 @@
 import React from 'react'
-import './busca.css'
+import './GetEnderecoAutocomplete.css'
 
 class GetEnderecoAutocomplete extends React.Component {
 

@@ -1,14 +1,3 @@
-#mes_nascimento:hover, #ano_nascimento:hover{
-    cursor: pointer;
-}
-
-select {
-
-text-align-last: center;
-padding-right: 29px;
-
-}
-
 .endereco-autocomplete{
     position: absolute;
     border-radius: 0 0 5px 5px ;
@@ -38,10 +27,6 @@ padding-right: 29px;
 
 .input_endereco_round_css_recoloca_bordas{
     border-radius: 50rem !important;
-}
-
-.texto-alert-dander{
-    color: #721c24;
 }
 
 @media only screen and (max-width: 992px) {
