@@ -30,15 +30,20 @@ class TabelaCreches extends React.Component {
                     <thead>
                     <tr>
                         <th></th>
-                        <th>Nome da escola</th>
-                        <th>Tipo</th>
-                        <th>Crianças aguardando vaga no Berçário I</th>
-
+                        {/*Montando o Cabecalho dinâmico*/}
+                        {this.props.cabecalho.map((parametro, index) => {
+                            if(index === this.props.cabecalho_posicao_concat){
+                                return <th key={index}>{`${parametro} ${this.props.cabecalho_concat}`}</th>
+                            }else{
+                                return <th key={index}>{parametro}</th>
+                            }
+                        })}
                     </tr>
                     </thead>
                     <tbody>
 
-                    {this.state.lista_escolas_raio_serie.map((escola, indice) => {
+                    {this.props.lista_escolas_raio_serie.map((escola, indice) => {
+
                         return (
                             <React.Fragment key={indice}>
                                 <tr className="tr-tabela-creches" data-toggle="collapse"
@@ -59,9 +64,9 @@ class TabelaCreches extends React.Component {
                                         />
                                         </span>
                                     </td>
-                                    <td><strong>{escola.escola}</strong></td>
+                                    <td><strong>{escola[this.props.parametro_nome_escola]}</strong></td>
                                     <td>{escola.tipo}</td>
-                                    <td>{escola.total}</td>
+                                    <td>{escola[this.props.parametro_total_creches]}</td>
                                 </tr>
                                 <TabelaCrecheDetalhe escola={escola}/>
                             </React.Fragment>

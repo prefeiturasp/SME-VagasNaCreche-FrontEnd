@@ -256,8 +256,24 @@ h2 {
     .leaflet-container {
       height: 955px;
     }
+  }
 
+  .mapa-creche {
+    background: $corBranco;
+    border: 0 none;
+    box-sizing: border-box;
+    .leaflet-container {
+      height: 955px;
+    }
+  }
 
+  .mapa-vagas-remanescentes {
+    background: $corBranco;
+    border: 0 none;
+    box-sizing: border-box;
+    .leaflet-container {
+      height: 622px;
+    }
   }
 }
 

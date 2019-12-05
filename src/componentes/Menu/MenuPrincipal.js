@@ -47,7 +47,7 @@ class MenuPrincipal extends React.Component {
                             </li>
 
                             <li className="nav-item">
-                                <Link className="nav-link text-secondary mb-1 pb-0" to="/conheca-a-rede">
+                                <Link className="nav-link text-secondary mb-1 pb-0" to="/vagas-remanescentes">
                                     Consulte vagas remanescentes
                                 </Link>
                             </li>

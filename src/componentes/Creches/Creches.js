@@ -4,7 +4,7 @@ import PubSub from 'pubsub-js'
 import {Link} from "react-router-dom";
 
 import BarraSuperior from '../../utils/BarraSuperior'
-import TabelaCreches from './TabelaCreches'
+import TabelaCreches from '../../utils/TabelaCreches'
 import Loading from '../../utils/Loading'
 import Mapa from '../Mapa/Mapa'
 import './creche.css'
@@ -27,7 +27,7 @@ class Creches extends React.Component {
             qtde_escolas: 0,
             esconderLinkBuscaEscola: true,
             carregado: undefined,
-            erro_carregamento_lista_de_escolas:false,
+            erro_carregamento_lista_de_escolas: false,
         };
 
         PubSub.publish("mostraLinkHome", true);
@@ -64,9 +64,9 @@ class Creches extends React.Component {
 
                 this.setState({carregado: true});
             }).catch(error => {
-                this.setState({carregado: true});
-                this.setState({erro_carregamento_lista_de_escolas: true});
-            });
+            this.setState({carregado: true});
+            this.setState({erro_carregamento_lista_de_escolas: true});
+        });
     }
 
     atualizarMapa(escola, latitude, longitude) {
@@ -91,38 +91,47 @@ class Creches extends React.Component {
                 <div className="container">
 
                     {!this.state.carregado ? (
-                        <Loading />
-                    ) :
+                            <Loading/>
+                        ) :
                         null
                     }
 
                     {this.state.lista_escolas_raio_serie ? (
 
-                            <div className="row">
-                                <div className="col-12 col-lg-6 mt-5">
-                                    <p className="fonte-16">Há <strong>{this.state.fila_de_espera}</strong> crianças
-                                        aguardando vaga no <strong>{this.state.dc_serie_ensino}</strong>, a serem
-                                        distribuídas nos <strong>{this.state.qtde_escolas}</strong> Centros de Educação
-                                        Infantil (CEIs) perto de <strong>{this.state.endereco}</strong>
-                                    </p>
-                                    <p className="fonte-16">Estes dados foram atualizados em {data_formatada}</p>
+                        <div className="row">
+                            <div className="col-12 col-lg-6 mt-5">
+                                <p className="fonte-16">Há <strong>{this.state.fila_de_espera}</strong> crianças
+                                    aguardando vaga no <strong>{this.state.dc_serie_ensino}</strong>, a serem
+                                    distribuídas nos <strong>{this.state.qtde_escolas}</strong> Centros de Educação
+                                    Infantil (CEIs) perto de <strong>{this.state.endereco}</strong>
+                                </p>
+                                <p className="fonte-16">Estes dados foram atualizados em {data_formatada}</p>
 
-                                    <TabelaCreches
-                                        lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
-                                        atualizarMapa={this.atualizarMapa}
-                                    />
+                                <TabelaCreches
+                                    lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
+                                    parametro_nome_escola="escola"
+                                    cabecalho={["Nome da escola", "Tipo", "Crianças aguardando vaga no"]}
+                                    cabecalho_concat={this.state.dc_serie_ensino}
+                                    cabecalho_posicao_concat={2}
+                                    parametro_total_creches="total"
+                                    atualizarMapa={this.atualizarMapa}
+                                />
 
-                                </div>
-                                <div className="col-lg-6 col-lg-6 mapa-completo">
-                                    <Mapa
-                                        lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
-                                        dc_serie_ensino={this.state.dc_serie_ensino}
-                                    />
-
-                                </div>
                             </div>
+                            <div className="col-lg-6 col-lg-6 mapa-completo">
+                                <Mapa
+                                    lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
+                                    dc_serie_ensino={this.state.dc_serie_ensino}
+                                    classe_css="mapa-creche h-80"
+                                    parametro_latitude="latitude"
+                                    parametro_longitude="longitude"
 
-                        ) : null }
+                                />
+
+                            </div>
+                        </div>
+
+                    ) : null}
 
                     {this.state.erro_carregamento_lista_de_escolas ? (
                         <div className="col-12 col-md-6 mt-5 mb-5">
@@ -144,7 +153,7 @@ class Creches extends React.Component {
                                 </button>
                             </Link>
                         </div>
-                    ): null}
+                    ) : null}
 
                 </div>
             </div>

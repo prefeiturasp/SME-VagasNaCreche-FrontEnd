@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import PubSub from "pubsub-js";
 import {Map, TileLayer, Marker, Popup} from "react-leaflet";
 
+import './Mapa.scss'
+
 export default class Mapa extends Component {
     constructor(props) {
         super(props);
@@ -49,8 +51,8 @@ export default class Mapa extends Component {
                 escolas.forEach(escola => {
                     let marcador = [];
                     marcador.escola = escola;
-                    marcador.latitude = escola.latitude;
-                    marcador.longitude = escola.longitude;
+                    marcador.latitude = escola[this.props.parametro_latitude];
+                    marcador.longitude = escola[this.props.parametro_longitude];
                     this.state.marcadores.push(marcador);
                 });
                 this.setState({
@@ -64,8 +66,11 @@ export default class Mapa extends Component {
     }
 
     render() {
+
+
+
         return (
-            <div className="mapa h-80">
+            <div className={`${this.props.classe_css}`}>
                 <Map
                     ref="map"
                     center={[this.state.lat, this.state.lng]}

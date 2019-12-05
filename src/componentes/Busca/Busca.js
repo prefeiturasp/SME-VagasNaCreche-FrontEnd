@@ -69,7 +69,6 @@ class Busca extends React.Component {
 
     handleChange(event) {
         // Para montar o autocomplete
-        const qtde_caracteres = event.target.value.length;
         const endereco_pesquisado = event.target.value;
         const endereco_api_consulta = `${URL_API_ENDERECO}/v1/search?text=${endereco_pesquisado}&size=10&boundary.gid=whosonfirst:locality:101965533`
         this.setState({endereco: endereco_pesquisado});
@@ -128,9 +127,14 @@ class Busca extends React.Component {
 
                         <div className="col-12 col-lg-6">
                             <SelectData
+                                atributo_mes = "mes_aniversario"
+                                atributo_ano = "ano_aniversario"
                                 mes_aniversario={this.state.mes_aniversario}
                                 ano_aniversario={this.state.ano_aniversario}
                                 onChange={this.setAtributosCampos}
+                                classe_css_container_mes="form-group col-lg-6 pr-md-1 pl-md-2 text-center"
+                                classe_css_container_ano="form-group col-lg-6 pl-md-1 text-center"
+                                classe_css_select="centraliza-select"
                             />
                         </div>
 
@@ -146,6 +150,7 @@ class Busca extends React.Component {
                         />
 
                         <div className="form-group col-lg-2 text-center text-lg-left">
+
                             <Link
                                 to={{
                                     pathname: "/creches",
@@ -177,6 +182,7 @@ class Busca extends React.Component {
                         msg_erro="A criança já não está em idade de creche. Saiba como matriculá-la na Educação Básica "
                         msg_erro_link="(ir para Solicitação de Vaga e Matrícula)."
                         msg_erro_link_url="https://educacao.sme.prefeitura.sp.gov.br/coordenadoria-de-gestao-e-organizacao-educacional-coged/solicitacao-de-vaga-e-matricula/)"
+                        classe_css="ml-lg-5 mr-lg-5"
                     />
                 ) : null}
 
