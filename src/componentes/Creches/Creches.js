@@ -112,6 +112,7 @@ class Creches extends React.Component {
                                     distribuídas nos <strong>{this.state.qtde_escolas}</strong> Centros de Educação
                                     Infantil (CEIs) perto de <strong>{this.state.endereco}</strong>
                                 </p>
+                                <p className="fonte-16">O total de crianças aguardando vaga na região é menor que a soma do total de crianças aguardando vaga em cada Centro de Educação Infantil porque uma mesma criança costuma constar no cadastro de espera de várias unidades.</p>
                                 <p className="fonte-16">Estes dados foram atualizados em {data_formatada}</p>
 
                                 <TabelaCreches
