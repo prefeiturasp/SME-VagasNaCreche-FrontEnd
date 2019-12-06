@@ -35,12 +35,27 @@ class Creches extends React.Component {
 
     componentWillMount() {
 
+        // Enviando parametros de pesquisa para gravar na API
+
+
+
         if (this.props.location.params) {
+
+            console.log("Ollyver ", this.props.location.params)
+
             this.setState({dc_serie_ensino: this.props.location.params.dc_serie_ensino})
             this.setState({serie: this.props.location.params.serie})
             this.setState({endereco: this.props.location.params.endereco})
             this.setState({latitude: this.props.location.params.latitude})
             this.setState({longitude: this.props.location.params.longitude})
+
+            Axios.post(`${URL_API_VAGANACRECHE_HOM}/pesquisa/historico_busca_end/`, {cd_serie_ensino: this.props.location.params.serie, latitute:this.props.location.params.latitude, longitude:this.props.location.params.longitude})
+            .then(resposta => {
+                    console.log("Sucesso em gravar pesquisa na APi")
+                }).catch(error => {
+                console.log("Erro ao gravar pesquisa na APi - ", error)
+            })
+
         } else {
             this.setState({dc_serie_ensino: localStorage.getItem('dc_serie_ensino')})
             this.setState({serie: localStorage.getItem('serie')})
