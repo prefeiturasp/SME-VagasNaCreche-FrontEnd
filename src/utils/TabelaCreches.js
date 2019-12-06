@@ -64,7 +64,7 @@ class TabelaCreches extends React.Component {
                                         />
                                         </span>
                                     </td>
-                                    <td><strong>{escola[this.props.parametro_nome_escola]}</strong></td>
+                                    <td><strong>{escola.escola}</strong></td>
                                     <td>{escola.tipo}</td>
                                     <td>{escola[this.props.parametro_total_creches]}</td>
                                 </tr>

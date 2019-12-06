@@ -22,7 +22,8 @@ class VagasRemanescentesCreches extends React.Component {
             busca: '',
             dc_serie_ensino_vagas: '',
             lista_escolas_raio_serie: [],
-            quantidade_de_creches: ''
+            quantidade_de_creches: '',
+            localidade_escolhida_label:'',
         }
 
         PubSub.publish("mostraLinkHome", true);
@@ -35,11 +36,13 @@ class VagasRemanescentesCreches extends React.Component {
             this.setState({dc_serie_ensino_vagas: this.props.location.params.dc_serie_ensino_vagas})
             this.setState({filtro: this.props.location.params.selecione_categoria})
             this.setState({busca: this.props.location.params.localidade_escolhida})
+            this.setState({localidade_escolhida_label: this.props.location.params.localidade_escolhida_label})
         } else {
             this.setState({serie_vagas: localStorage.getItem('serie_vagas')})
             this.setState({dc_serie_ensino_vagas: localStorage.getItem('dc_serie_ensino_vagas')})
             this.setState({filtro: localStorage.getItem('selecione_categoria')})
             this.setState({busca: localStorage.getItem('localidade_escolhida')})
+            this.setState({localidade_escolhida_label: localStorage.getItem('localidade_escolhida_label')})
         }
 
     }
@@ -67,10 +70,6 @@ class VagasRemanescentesCreches extends React.Component {
     }
 
     atualizarMapa(escola, latitude, longitude) {
-
-
-        console.log("Ollyver Creche escola | ", escola)
-
                 PubSub.publish("escola", escola);
                 PubSub.publish("latitude", latitude);
                 PubSub.publish("longitude", longitude);
@@ -89,16 +88,13 @@ class VagasRemanescentesCreches extends React.Component {
 
                                 <p className='fonte-16'>
                                     Há <strong>{this.state.quantidade_de_creches}</strong> Centro de Educação Infantil
-                                    em <strong>{this.state.busca}</strong> com vagas disponíveis
+                                    em <strong>{this.state.localidade_escolhida_label}</strong> com vagas disponíveis
                                     no <strong>{this.state.dc_serie_ensino_vagas}</strong>.
                                 </p>
 
 
                                 <TabelaCreches
                                     lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
-                                    parametro_nome_escola="nm_unidade_educacao"
-                                    parametro_latitude="cd_latitude"
-                                    parametro_longitude="cd_longitude"
                                     cabecalho={["Nome da escola", "Tipo", "Vagas remanescentes no"]}
                                     cabecalho_concat={this.state.dc_serie_ensino_vagas}
                                     cabecalho_posicao_concat={2}
@@ -111,19 +107,19 @@ class VagasRemanescentesCreches extends React.Component {
 
                             <div className="col-lg-6 col-lg-6 mapa-completo">
 
-
                                 <Mapa
                                     lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
-                                    parametro_latitude="cd_latitude"
-                                    parametro_longitude="cd_longitude"
                                     dc_serie_ensino={this.state.dc_serie_ensino_vagas}
                                     classe_css="mapa-creche h-80"
                                 />
 
-
                             </div>
                         </div>
-                    ) : null}
+                    ) :
+                    <div className="col-12 col-lg-6 mt-5">
+                        <h1>Não existem dados cadastrados</h1>
+                    </div>
+                    }
 
                 </div>
             </Fragment>

@@ -109,7 +109,6 @@ class Creches extends React.Component {
 
                                 <TabelaCreches
                                     lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
-                                    parametro_nome_escola="escola"
                                     cabecalho={["Nome da escola", "Tipo", "Crianças aguardando vaga no"]}
                                     cabecalho_concat={this.state.dc_serie_ensino}
                                     cabecalho_posicao_concat={2}
@@ -123,9 +122,6 @@ class Creches extends React.Component {
                                     lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
                                     dc_serie_ensino={this.state.dc_serie_ensino}
                                     classe_css="mapa-creche h-80"
-                                    parametro_latitude="latitude"
-                                    parametro_longitude="longitude"
-
                                 />
 
                             </div>

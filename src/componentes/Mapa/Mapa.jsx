@@ -51,8 +51,8 @@ export default class Mapa extends Component {
                 escolas.forEach(escola => {
                     let marcador = [];
                     marcador.escola = escola;
-                    marcador.latitude = escola[this.props.parametro_latitude];
-                    marcador.longitude = escola[this.props.parametro_longitude];
+                    marcador.latitude = escola.latitude;
+                    marcador.longitude = escola.longitude;
                     this.state.marcadores.push(marcador);
                 });
                 this.setState({
@@ -66,9 +66,6 @@ export default class Mapa extends Component {
     }
 
     render() {
-
-
-
         return (
             <div className={`${this.props.classe_css}`}>
                 <Map

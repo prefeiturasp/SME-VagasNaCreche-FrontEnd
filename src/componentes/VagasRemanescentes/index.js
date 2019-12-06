@@ -28,6 +28,7 @@ class VagasRemanescentes extends React.Component {
             selecione_localidade_css_round: '',
             localidades: [],
             localidade_escolhida: null,
+            localidade_escolhida_label: null,
             label_localidades: '',
             lista_escolas_raio_vagas: [],
         }
@@ -49,8 +50,10 @@ class VagasRemanescentes extends React.Component {
     }
 
     onChangeLocalidade = (event) =>{
-        this.setState({localidade_escolhida:event})
-        localStorage.setItem("localidade_escolhida", event)
+        this.setState({localidade_escolhida:event.target.value})
+        this.setState({localidade_escolhida_label:event.target.options[event.target.selectedIndex].text})
+        localStorage.setItem("localidade_escolhida", event.target.value)
+        localStorage.setItem("localidade_escolhida_label", event.target.options[event.target.selectedIndex].text)
     }
 
 
@@ -172,10 +175,10 @@ class VagasRemanescentes extends React.Component {
                         <label htmlFor="selecione_localidade" className="cor-azul">Selecione a localidade*</label>
 
                         <select
-                            className={`${this.state.selecione_localidade_css_round} mb-5 form-control form-control-lg rounded-pill shadow fonte-16`}
+                            className={`${this.state.selecione_localidade_css_round} mb-4 form-control form-control-lg rounded-pill shadow fonte-16`}
                             id="selecione_localidade"
                             disabled={this.state.erro_idade_crianca_vagas || !this.state.selecione_categoria || this.state.selecione_categoria === ''}
-                            onChange={(event) => this.onChangeLocalidade(event.target.value)}
+                            onChange={(event) => this.onChangeLocalidade(event)}
                             onBlur={() => this.setState({selecione_localidade_css_round: ''})}
                             onClick={() => !this.state.selecione_localidade_css_round ? this.setState({selecione_localidade_css_round: 'input_selecione_categoria_round_css'}) : this.setState({selecione_localidade_css_round: ''})}
                         >
@@ -190,11 +193,13 @@ class VagasRemanescentes extends React.Component {
 
                             <Link
                                 to={{
-                                    pathname: "/vagas-remanescentes-creches", params: {
+                                    pathname: "/vagas-remanescentes-creches",
+                                    params: {
                                         dc_serie_ensino_vagas: this.state.dc_serie_ensino_vagas,
                                         serie_vagas: this.state.serie_vagas,
                                         selecione_categoria: this.state.selecione_categoria,
                                         localidade_escolhida: this.state.localidade_escolhida,
+                                        localidade_escolhida_label: this.state.localidade_escolhida_label,
                                     }
                                 }}>
 
