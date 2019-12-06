@@ -41,9 +41,11 @@ class MenuPrincipal extends React.Component {
                         <ul className="nav nav-tabs border-0">
 
                             <li className="nav-item">
-                                <Link className="nav-link text-secondary mb-1 pb-0" to="/">
+                                <a className="nav-link text-secondary mb-1 pb-0" href="https://educacao.sme.prefeitura.sp.gov.br/entenda-como-funciona-a-plataforma-vaga-na-creche/">
                                     Sobre o Vaga na Creche
-                                </Link>
+                                </a>
+
+
                             </li>
 
                             <li className="nav-item">
