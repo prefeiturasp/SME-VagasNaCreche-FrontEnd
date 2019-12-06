@@ -49,9 +49,9 @@ class VagasRemanescentes extends React.Component {
         return this.state.erro_idade_crianca_vagas || this.state.mes_aniversario_vagas === undefined || this.state.ano_aniversario_vagas === undefined || !this.state.selecione_categoria || this.state.selecione_categoria === '' || this.state.localidade_escolhida === null || this.state.localidade_escolhida === ''
     }
 
-    onChangeLocalidade = (event) =>{
-        this.setState({localidade_escolhida:event.target.value})
-        this.setState({localidade_escolhida_label:event.target.options[event.target.selectedIndex].text})
+    onChangeLocalidade = (event) => {
+        this.setState({localidade_escolhida: event.target.value})
+        this.setState({localidade_escolhida_label: event.target.options[event.target.selectedIndex].text})
         localStorage.setItem("localidade_escolhida", event.target.value)
         localStorage.setItem("localidade_escolhida_label", event.target.options[event.target.selectedIndex].text)
     }
@@ -87,7 +87,8 @@ class VagasRemanescentes extends React.Component {
 
             } else if (categoria === 'SUB') {
                 return this.state.localidades['sub-prefeituras'].map((item, index) =>
-                    <option key={item.dc_sub_prefeitura} value={item.dc_sub_prefeitura}>{item.dc_sub_prefeitura}</option>)
+                    <option key={item.dc_sub_prefeitura}
+                            value={item.dc_sub_prefeitura}>{item.dc_sub_prefeitura}</option>)
             }
         }
 
@@ -135,8 +136,8 @@ class VagasRemanescentes extends React.Component {
                         </p>
                         <p className="fonte-16"><strong>Sobre a Criança</strong></p>
                         <SelectData
-                            atributo_mes = "mes_aniversario_vagas"
-                            atributo_ano = "ano_aniversario_vagas"
+                            atributo_mes="mes_aniversario_vagas"
+                            atributo_ano="ano_aniversario_vagas"
                             mes_aniversario={this.state.mes_aniversario_vagas}
                             ano_aniversario={this.state.ano_aniversario_vagas}
                             onChange={this.setAtributosCampos}
@@ -150,11 +151,14 @@ class VagasRemanescentes extends React.Component {
                                     msg_erro="A criança já não está em idade de creche. Saiba como matriculá-la na Educação Básica "
                                     msg_erro_link="(ir para Solicitação de Vaga e Matrícula)."
                                     msg_erro_link_url="https://educacao.sme.prefeitura.sp.gov.br/coordenadoria-de-gestao-e-organizacao-educacional-coged/solicitacao-de-vaga-e-matricula/)"
+                                    color="danger"
+                                    classe_css_texto="texto-alert-danger"
                                 />
                             ) : null}
 
                         <p className="fonte-16 mt-4"><strong>Sobre a localidade</strong></p>
-                        <label htmlFor="selecione_categoria_busca" className="cor-azul">Selecione a categoria de busca*</label>
+                        <label htmlFor="selecione_categoria_busca" className="cor-azul">Selecione a categoria de
+                            busca*</label>
 
                         <select
                             defaultValue={this.state.selecione_categoria}
@@ -219,6 +223,7 @@ class VagasRemanescentes extends React.Component {
                         <Mapa
                             lista_escolas_raio_serie={this.state.lista_escolas_raio_vagas}
                             dc_serie_ensino={this.state.dc_serie_ensino_vagas}
+                            zoom_inicial={14}
                             classe_css="mapa-vagas-remanescentes h-80"
                         />
                     </div>

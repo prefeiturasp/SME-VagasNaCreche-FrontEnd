@@ -11,7 +11,7 @@ export default class Mapa extends Component {
             escola: "",
             lat: -23.5505,
             lng: -46.6333,
-            zoom: 14,
+            zoom: this.props.zoom_inicial,
             marcadores: [],
             lista_escolas_raio_serie: this.props.lista_escolas_raio_serie,
             dc_serie_ensino: this.props.dc_serie_ensino

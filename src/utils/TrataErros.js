@@ -9,6 +9,8 @@ class TrataErros extends React.Component {
             msg_erro_link: this.props.msg_erro_link,
             msg_erro_link_url: this.props.msg_erro_link_url,
             classe_css: this.props.classe_css,
+            classe_css_texto: this.props.classe_css_texto,
+            color: this.props.color,
         }
     }
 
@@ -16,10 +18,10 @@ class TrataErros extends React.Component {
         return (
             <Fragment>
                 {this.state.msg_erro ? (
-                    <div className={`alert alert-danger ${this.state.classe_css}`} role="alert">
+                    <div className={`alert alert-${this.props.color} ${this.state.classe_css}`} role="alert">
                         <strong>{this.state.msg_erro}</strong>
                         {this.state.msg_erro_link && this.state.msg_erro_link_url ? (
-                            <strong><a className="texto-alert-dander" href={this.state.msg_erro_link_url}> {this.state.msg_erro_link}</a></strong>
+                            <strong><a className={`${this.props.classe_css_texto}`} href={this.state.msg_erro_link_url}> {this.state.msg_erro_link}</a></strong>
                         ) : null}
                     </div>
                 ) : null}

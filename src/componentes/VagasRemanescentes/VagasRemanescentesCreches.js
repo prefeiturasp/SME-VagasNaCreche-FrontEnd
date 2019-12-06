@@ -110,7 +110,8 @@ class VagasRemanescentesCreches extends React.Component {
                                 <Mapa
                                     lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
                                     dc_serie_ensino={this.state.dc_serie_ensino_vagas}
-                                    classe_css="mapa-creche h-80"
+                                    zoom_inicial={10}
+                                    classe_css="mapa-vagas-remanescentes-creches h-80"
                                 />
 
                             </div>

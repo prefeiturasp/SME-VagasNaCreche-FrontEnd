@@ -2,6 +2,7 @@ import React from 'react'
 import Axios from "axios";
 import PubSub from 'pubsub-js'
 import {Link} from "react-router-dom";
+import ConsultarNovamente from "../../utils/ConsultarNovamente";
 
 import BarraSuperior from '../../utils/BarraSuperior'
 import TabelaCreches from '../../utils/TabelaCreches'
@@ -35,20 +36,14 @@ class Creches extends React.Component {
 
     componentWillMount() {
 
-        // Enviando parametros de pesquisa para gravar na API
-
-
-
         if (this.props.location.params) {
-
-            console.log("Ollyver ", this.props.location.params)
-
             this.setState({dc_serie_ensino: this.props.location.params.dc_serie_ensino})
             this.setState({serie: this.props.location.params.serie})
             this.setState({endereco: this.props.location.params.endereco})
             this.setState({latitude: this.props.location.params.latitude})
             this.setState({longitude: this.props.location.params.longitude})
 
+            // Enviando parametros de pesquisa para gravar na API
             Axios.post(`${URL_API_VAGANACRECHE_HOM}/pesquisa/historico_busca_end/`, {cd_serie_ensino: this.props.location.params.serie, latitute:this.props.location.params.latitude, longitude:this.props.location.params.longitude})
             .then(resposta => {
                     console.log("Sucesso em gravar pesquisa na APi")
@@ -136,6 +131,7 @@ class Creches extends React.Component {
                                 <Mapa
                                     lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
                                     dc_serie_ensino={this.state.dc_serie_ensino}
+                                    zoom_inicial={14}
                                     classe_css="mapa-creche h-80"
                                 />
 
@@ -145,24 +141,17 @@ class Creches extends React.Component {
                     ) : null}
 
                     {this.state.erro_carregamento_lista_de_escolas ? (
+
+
+
                         <div className="col-12 col-md-6 mt-5 mb-5">
-                            <p className="fonte-14">Não foi encontrado nenhum resultado. Por favor tente uma nova
-                                pesquisa</p>
-                            <Link
-                                to={{
-                                    pathname: "/",
-                                    params: {
-                                        dc_serie_ensino: this.state.dc_serie_ensino,
-                                        serie: this.state.serie,
-                                        endereco: this.state.endereco,
-                                        longitude: this.state.longitude,
-                                        latitude: this.state.latitude,
-                                    }
-                                }}>
-                                <button type="button" className="btn btn-outline-primary rounded-pill">Consultar
-                                    novamente
-                                </button>
-                            </Link>
+
+                            <ConsultarNovamente
+                                texto="Não foi encontrado nenhum resultado. Por favor tente uma nova pesquisa"
+                                link_to="/"
+                                classe_css_btn='btn btn-outline-primary rounded-pill'
+                                texto_btn = "Consultar novamente"
+                            />
                         </div>
                     ) : null}
 

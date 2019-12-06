@@ -183,6 +183,8 @@ class Busca extends React.Component {
                         msg_erro_link="(ir para Solicitação de Vaga e Matrícula)."
                         msg_erro_link_url="https://educacao.sme.prefeitura.sp.gov.br/coordenadoria-de-gestao-e-organizacao-educacional-coged/solicitacao-de-vaga-e-matricula/)"
                         classe_css="ml-lg-5 mr-lg-5"
+                        classe_css_texto="texto-alert-danger"
+                        color="danger"
                     />
                 ) : null}
 
