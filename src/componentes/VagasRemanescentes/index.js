@@ -10,7 +10,7 @@ import TrataErros from "../../utils/TrataErros";
 import Axios from "axios";
 import {Link} from "react-router-dom";
 
-const URL_API_ENDERECO_VAGA_LOCAL = process.env.REACT_APP_API_VAGANACRECHE_LOCAL;
+const URL_API_VAGANACRECHE_HOM_LOCAL = process.env.REACT_APP_API_VAGANACRECHE_LOCAL;
 
 class VagasRemanescentes extends React.Component {
 
@@ -37,7 +37,7 @@ class VagasRemanescentes extends React.Component {
     }
 
     componentWillMount() {
-        Axios.get(`${URL_API_ENDERECO_VAGA_LOCAL}/vaga/filtros/`)
+        Axios.get(`${URL_API_VAGANACRECHE_HOM_LOCAL}/vaga/filtros/`)
             .then(resposta => {
                 this.setState({localidades: resposta.data})
             }).catch(error => {
@@ -224,6 +224,7 @@ class VagasRemanescentes extends React.Component {
                             lista_escolas_raio_serie={this.state.lista_escolas_raio_vagas}
                             dc_serie_ensino={this.state.dc_serie_ensino_vagas}
                             zoom_inicial={14}
+                            parametro_total_creches="vagas_remanescente"
                             classe_css="mapa-vagas-remanescentes h-80"
                         />
                     </div>

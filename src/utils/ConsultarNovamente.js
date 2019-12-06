@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react'
 import {Link} from "react-router-dom";
+import './ConsultarNovamente.scss'
 
 export default props => (
 

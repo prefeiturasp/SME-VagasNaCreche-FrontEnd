@@ -212,26 +212,6 @@ h2 {
     }
   }
 
-  .overflow-auto {
-    .tabela-escolas {
-      font-size: 0.8rem;
-
-      tr {
-        &.collapsing,
-        &.collapse {
-          background: $corCinzaEscuro;
-        }
-      }
-
-      .fa-chevron-down[aria-expanded="true"] {
-        transform: rotate(180deg);
-      }
-
-      tr[aria-expanded="true"] {
-        background: $corCinzaEscuro;
-      }
-    }
-  }
 }
 
 // Consulta

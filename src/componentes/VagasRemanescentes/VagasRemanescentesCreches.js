@@ -4,13 +4,11 @@ import PubSub from "pubsub-js";
 import TabelaCreches from "../../utils/TabelaCreches";
 import BarraSuperior from "../../utils/BarraSuperior";
 import Mapa from "../Mapa/Mapa";
+import Loading from "../../utils/Loading";
+import ConsultarNovamente from "../../utils/ConsultarNovamente";
 
-const URL_API_ENDERECO_VAGA_LOCAL = process.env.REACT_APP_API_VAGANACRECHE_LOCAL;
+const URL_API_VAGANACRECHE_HOM_LOCAL = process.env.REACT_APP_API_VAGANACRECHE_LOCAL;
 
-// http://127.0.1.1/api/vaga/4/?filtro=DRE&busca=JT
-// http://127.0.1.1/api/vaga/4/?filtro=SUB&busca=JT
-// http://127.0.1.1/api/vaga/4/?filtro=DIS&busca=JT
-// http://127.0.1.1/api/vaga/4/?filtro=ALL
 class VagasRemanescentesCreches extends React.Component {
 
     constructor(props) {
@@ -21,9 +19,11 @@ class VagasRemanescentesCreches extends React.Component {
             filtro: '',
             busca: '',
             dc_serie_ensino_vagas: '',
-            lista_escolas_raio_serie: [],
+            lista_escolas_raio_serie: false,
             quantidade_de_creches: '',
-            localidade_escolhida_label:'',
+            localidade_escolhida_label: '',
+            carregado: undefined,
+            erro_carregamento_lista_de_escolas: false,
         }
 
         PubSub.publish("mostraLinkHome", true);
@@ -49,37 +49,47 @@ class VagasRemanescentesCreches extends React.Component {
 
     componentDidMount() {
 
-        // http://127.0.1.1/api/vaga/4/?filtro=DIS&busca=JT
-// http://127.0.1.1/api/vaga/4/?filtro=ALL
-
         let url_consulta = ''
 
         if (this.state.busca === 'all') {
-            url_consulta = `${URL_API_ENDERECO_VAGA_LOCAL}/vaga/${this.state.serie_vagas}/?filtro=ALL`
+            url_consulta = `${URL_API_VAGANACRECHE_HOM_LOCAL}/vaga/${this.state.serie_vagas}/?filtro=ALL`
         } else {
-            url_consulta = `${URL_API_ENDERECO_VAGA_LOCAL}/vaga/${this.state.serie_vagas}/?filtro=${this.state.filtro}&busca=${this.state.busca}`
+            url_consulta = `${URL_API_VAGANACRECHE_HOM_LOCAL}/vaga/${this.state.serie_vagas}/?filtro=${this.state.filtro}&busca=${this.state.busca}`
         }
 
         Axios.get(`${url_consulta}`)
             .then(resposta => {
                 this.setState({lista_escolas_raio_serie: resposta.data.escolas})
                 this.setState({quantidade_de_creches: resposta.data.escolas.length})
+                this.setState({carregado: true});
             }).catch(error => {
+            this.setState({carregado: true});
+            this.setState({erro_carregamento_lista_de_escolas: true});
 
         });
     }
 
     atualizarMapa(escola, latitude, longitude) {
-                PubSub.publish("escola", escola);
-                PubSub.publish("latitude", latitude);
-                PubSub.publish("longitude", longitude);
+        PubSub.publish("escola", escola);
+        PubSub.publish("latitude", latitude);
+        PubSub.publish("longitude", longitude);
     }
 
     render() {
+
+        console.log("Ollyver ", this.state.lista_escolas_raio_serie)
+
         return (
             <Fragment>
                 <BarraSuperior texto="Quer saber onde há vagas disponíveis?" filtro={false}/>
                 <div className="container">
+
+                    {!this.state.carregado ? (
+                            <Loading/>
+                        ) :
+                        null
+                    }
+
 
                     {this.state.lista_escolas_raio_serie.length > 0 ? (
 
@@ -102,6 +112,14 @@ class VagasRemanescentesCreches extends React.Component {
                                     atualizarMapa={this.atualizarMapa}
                                 />
 
+                                <div className="text-center mb-5 mt-5">
+                                    <ConsultarNovamente
+                                        texto=""
+                                        link_to="/vagas-remanescentes"
+                                        classe_css_btn='btn btn-outline-primary rounded-pill'
+                                        texto_btn="Consultar novamente"
+                                    />
+                                </div>
 
                             </div>
 
@@ -111,16 +129,29 @@ class VagasRemanescentesCreches extends React.Component {
                                     lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
                                     dc_serie_ensino={this.state.dc_serie_ensino_vagas}
                                     zoom_inicial={10}
-                                    classe_css="mapa-vagas-remanescentes-creches h-80"
+                                    parametro_total_creches="vagas_remanescente"
+                                    classe_css="mapa-vagas-remanescentes-creches"
                                 />
 
                             </div>
                         </div>
                     ) :
-                    <div className="col-12 col-lg-6 mt-5">
-                        <h1>Não existem dados cadastrados</h1>
-                    </div>
+
+                        this.state.erro_carregamento_lista_de_escolas ||  this.state.lista_escolas_raio_serie.length <= 0 ? (
+                            <div className="col-12 col-md-6 mt-5 mb-5">
+
+                            <ConsultarNovamente
+                                texto="No momento, não há vagas remanescentes no território selecionado."
+                                link_to="/vagas-remanescentes"
+                                classe_css_btn='btn btn-outline-primary rounded-pill'
+                                texto_btn="Consultar novamente"
+                            />
+                        </div>
+
+                        ) : null
+
                     }
+
 
                 </div>
             </Fragment>

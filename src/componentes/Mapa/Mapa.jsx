@@ -85,7 +85,7 @@ export default class Mapa extends Component {
                             >
                                 <Popup>
                                     <p className="fonte-14 mb-0"><strong>{marcador.escola.escola}</strong></p>
-                                    <p className="fonte-12 mb-1 mt-0"> Há {marcador.escola.total} crianças aguardando no {this.state.dc_serie_ensino}</p>
+                                    <p className="fonte-12 mb-1 mt-0"> Há {marcador.escola[this.props.parametro_total_creches]} crianças aguardando no {this.state.dc_serie_ensino}</p>
                                     <p className="fonte-14 mt-3">
                                         <strong>Endereço: </strong>{marcador.escola.endereco_completo}</p>
 
