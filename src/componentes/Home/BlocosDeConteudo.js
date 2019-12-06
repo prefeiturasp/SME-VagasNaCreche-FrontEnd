@@ -55,7 +55,7 @@ const BlocosDeConteudo = () => (
                             Quer saber mais sobre cada Centro de Educação Infantil?
                         </h2>
                         <p className="mb-0">
-                            Na plataforma Escola Aberta você pode consultar dados não apenas dos Centros de Educação Infantil, mas de todas as escolas municipais de São Paulo. Ela informa, por exemplo, as séries, períodos, quantidade de turmas e de estudantes, vagas oferecidas e atendidas e que ambientes a escola possui <a href="https://educacao.sme.prefeitura.sp.gov.br/escolaaberta/conheca-a-rede">(ir para Escola Aberta).</a>
+                            Na plataforma Escola Aberta você pode consultar dados não apenas dos Centros de Educação Infantil, mas de todas as escolas municipais de São Paulo. Ela informa, por exemplo, as séries, períodos, quantidade de turmas e de estudantes, vagas oferecidas e atendidas e que ambientes a escola possui <a href="https://educacao.sme.prefeitura.sp.gov.br/escolaaberta/">(ir para Escola Aberta).</a>
 
                         </p>
                     </div>
