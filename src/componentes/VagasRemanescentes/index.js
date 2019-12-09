@@ -10,7 +10,7 @@ import TrataErros from "../../utils/TrataErros";
 import Axios from "axios";
 import {Link} from "react-router-dom";
 
-const URL_API_VAGANACRECHE_HOM_LOCAL = process.env.REACT_APP_API_VAGANACRECHE_LOCAL;
+const URL_API_VAGANACRECHE_HOM = process.env.REACT_APP_API_VAGANACRECHE_HOM;
 
 class VagasRemanescentes extends React.Component {
 
@@ -37,7 +37,7 @@ class VagasRemanescentes extends React.Component {
     }
 
     componentWillMount() {
-        Axios.get(`${URL_API_VAGANACRECHE_HOM_LOCAL}/vaga/filtros/`)
+        Axios.get(`${URL_API_VAGANACRECHE_HOM}/vaga/filtros/`)
             .then(resposta => {
                 this.setState({localidades: resposta.data})
             }).catch(error => {

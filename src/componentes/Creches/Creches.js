@@ -8,7 +8,7 @@ import TabelaCreches from '../../utils/TabelaCreches'
 import Loading from '../../utils/Loading'
 import Mapa from '../Mapa/Mapa'
 
-const URL_API_VAGANACRECHE_HOM_LOCAL = process.env.REACT_APP_API_VAGANACRECHE_LOCAL;
+const URL_API_VAGANACRECHE_HOM = process.env.REACT_APP_API_VAGANACRECHE_HOM;
 
 class Creches extends React.Component {
 
@@ -24,6 +24,7 @@ class Creches extends React.Component {
             dt_atualizacao: new Date(),
             fila_de_espera: 0,
             qtde_escolas: 0,
+            lista_escolas_raio_serie: false,
             esconderLinkBuscaEscola: true,
             carregado: undefined,
             erro_carregamento_lista_de_escolas: false,
@@ -42,7 +43,7 @@ class Creches extends React.Component {
             this.setState({longitude: this.props.location.params.longitude})
 
             // Enviando parametros de pesquisa para gravar na API
-            Axios.post(`${URL_API_VAGANACRECHE_HOM_LOCAL}/pesquisa/historico_busca_end/`, {
+            Axios.post(`${URL_API_VAGANACRECHE_HOM}/pesquisa/historico_busca_end/`, {
                 cd_serie: this.props.location.params.serie,
                 latitude: this.props.location.params.latitude,
                 longitude: this.props.location.params.longitude
@@ -62,7 +63,7 @@ class Creches extends React.Component {
 
     componentDidMount() {
 
-        Axios.get(`${URL_API_VAGANACRECHE_HOM_LOCAL}/fila/espera_escola_raio/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`)
+        Axios.get(`${URL_API_VAGANACRECHE_HOM}/fila/espera_escola_raio/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`)
             .then(resposta => {
                 this.setState({lista_escolas_raio_serie: resposta.data.escolas});
                 this.setState({qtde_escolas: resposta.data.escolas.length});
@@ -89,7 +90,6 @@ class Creches extends React.Component {
 
     render() {
         const data_formatada = this.convertDateTime(this.state.dt_atualizacao)
-
         return (
             <div>
 
@@ -103,7 +103,7 @@ class Creches extends React.Component {
                         null
                     }
 
-                    {this.state.lista_escolas_raio_serie ? (
+                    {this.state.lista_escolas_raio_serie.length > 0 ?  (
 
                         <div className="row">
                             <div className="col-12 col-lg-6 mt-5">
@@ -137,14 +137,12 @@ class Creches extends React.Component {
                             </div>
                         </div>
 
-                    ) : null}
-
-                    {this.state.erro_carregamento_lista_de_escolas ? (
-
-                        <div className="col-12 col-md-6 mt-5 mb-5">
+                    ) :
+                    this.state.erro_carregamento_lista_de_escolas ||  this.state.lista_escolas_raio_serie.length <= 0 ? (
+                    <div className="col-12 col-md-6 mt-5 mb-5">
 
                             <ConsultarNovamente
-                                texto="Não foi encontrado nenhum resultado. Por favor tente uma nova pesquisa"
+                                texto={`Não há Centros de Educação Infantil que atendem ${this.state.dc_serie_ensino} a 1,5 Km de distância de ${this.state.endereco}`}
                                 link_to="/"
                                 classe_css_btn='btn btn-outline-primary rounded-pill'
                                 texto_btn="Consultar novamente"

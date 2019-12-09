@@ -25,7 +25,7 @@ class SelectData extends React.Component {
                 </div>
 
                 <div className={`form-group col-lg-6 ${this.props.classe_css_container_ano}`}>
-                    <label htmlFor="mes_nascimento" className="cor-azul mt-3 mt-lg-0">Selecione o ano de nascimento*</label>
+                    <label htmlFor="ano_nascimento" className="cor-azul mt-3 mt-lg-0">Selecione o ano de nascimento*</label>
                     <select
                         id="ano_nascimento"
                         className={`${this.props.classe_css_select} mes_nascimento_home form-control form-control-lg rounded-pill shadow fonte-16`}

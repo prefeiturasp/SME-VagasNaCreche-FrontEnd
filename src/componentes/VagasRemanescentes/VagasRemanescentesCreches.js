@@ -7,7 +7,7 @@ import Mapa from "../Mapa/Mapa";
 import Loading from "../../utils/Loading";
 import ConsultarNovamente from "../../utils/ConsultarNovamente";
 
-const URL_API_VAGANACRECHE_HOM_LOCAL = process.env.REACT_APP_API_VAGANACRECHE_LOCAL;
+const URL_API_VAGANACRECHE_HOM = process.env.REACT_APP_API_VAGANACRECHE_HOM;
 
 class VagasRemanescentesCreches extends React.Component {
 
@@ -52,9 +52,9 @@ class VagasRemanescentesCreches extends React.Component {
         let url_consulta = ''
 
         if (this.state.busca === 'all') {
-            url_consulta = `${URL_API_VAGANACRECHE_HOM_LOCAL}/vaga/${this.state.serie_vagas}/?filtro=ALL`
+            url_consulta = `${URL_API_VAGANACRECHE_HOM}/vaga/${this.state.serie_vagas}/?filtro=ALL`
         } else {
-            url_consulta = `${URL_API_VAGANACRECHE_HOM_LOCAL}/vaga/${this.state.serie_vagas}/?filtro=${this.state.filtro}&busca=${this.state.busca}`
+            url_consulta = `${URL_API_VAGANACRECHE_HOM}/vaga/${this.state.serie_vagas}/?filtro=${this.state.filtro}&busca=${this.state.busca}`
         }
 
         Axios.get(`${url_consulta}`)
@@ -76,9 +76,6 @@ class VagasRemanescentesCreches extends React.Component {
     }
 
     render() {
-
-        console.log("Ollyver ", this.state.lista_escolas_raio_serie)
-
         return (
             <Fragment>
                 <BarraSuperior texto="Quer saber onde há vagas disponíveis?" filtro={false}/>
