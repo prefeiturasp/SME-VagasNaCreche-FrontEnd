@@ -1,7 +1,8 @@
 import React from 'react'
-import Axios from "axios";
 import PubSub from 'pubsub-js'
 import ConsultarNovamente from "../../utils/ConsultarNovamente";
+
+import ConectarApi from "../../services/ConectarApi";
 
 import BarraSuperior from '../../utils/BarraSuperior'
 import TabelaCreches from '../../utils/TabelaCreches'
@@ -42,8 +43,7 @@ class Creches extends React.Component {
             this.setState({latitude: this.props.location.params.latitude})
             this.setState({longitude: this.props.location.params.longitude})
 
-            // Enviando parametros de pesquisa para gravar na API
-            Axios.post(`${URL_API_VAGANACRECHE_HOM}/pesquisa/historico_busca_end/`, {
+            ConectarApi.logarSemAutenticacao(`${URL_API_VAGANACRECHE_HOM}/pesquisa/historico_busca_end/`, 'post', {
                 cd_serie: this.props.location.params.serie,
                 latitude: this.props.location.params.latitude,
                 longitude: this.props.location.params.longitude
@@ -63,7 +63,8 @@ class Creches extends React.Component {
 
     componentDidMount() {
 
-        Axios.get(`${URL_API_VAGANACRECHE_HOM}/fila/espera_escola_raio/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`)
+        ConectarApi.logarSemAutenticacao(`${URL_API_VAGANACRECHE_HOM}/fila/espera_escola_raio/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`, 'get')
+
             .then(resposta => {
                 this.setState({lista_escolas_raio_serie: resposta.data.escolas});
                 this.setState({qtde_escolas: resposta.data.escolas.length});

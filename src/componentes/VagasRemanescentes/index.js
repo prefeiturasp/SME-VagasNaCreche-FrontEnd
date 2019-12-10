@@ -7,8 +7,8 @@ import calculaSerieEnsino from '../../utils/CalculaSerieEnsino';
 import SelectData from '../../utils/SelectData';
 import Mapa from "../Mapa/Mapa";
 import TrataErros from "../../utils/TrataErros";
-import Axios from "axios";
 import {Link} from "react-router-dom";
+import ConectarApi from "../../services/ConectarApi";
 
 const URL_API_VAGANACRECHE_HOM = process.env.REACT_APP_API_VAGANACRECHE_HOM;
 
@@ -37,7 +37,7 @@ class VagasRemanescentes extends React.Component {
     }
 
     componentWillMount() {
-        Axios.get(`${URL_API_VAGANACRECHE_HOM}/vaga/filtros/`)
+        ConectarApi.logarSemAutenticacao(`${URL_API_VAGANACRECHE_HOM}/vaga/filtros/`, 'get')
             .then(resposta => {
                 this.setState({localidades: resposta.data})
             }).catch(error => {

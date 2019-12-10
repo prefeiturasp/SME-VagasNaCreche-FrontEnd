@@ -1,18 +1,18 @@
 import React, {Fragment} from 'react'
-import Axios from "axios";
 import PubSub from "pubsub-js";
 import TabelaCreches from "../../utils/TabelaCreches";
 import BarraSuperior from "../../utils/BarraSuperior";
 import Mapa from "../Mapa/Mapa";
 import Loading from "../../utils/Loading";
 import ConsultarNovamente from "../../utils/ConsultarNovamente";
+import ConectarApi from "../../services/ConectarApi";
 
 const URL_API_VAGANACRECHE_HOM = process.env.REACT_APP_API_VAGANACRECHE_HOM;
 
 class VagasRemanescentesCreches extends React.Component {
 
     constructor(props) {
-        super(props)
+        super(props);
 
         this.state = {
             serie_vagas: '',
@@ -24,7 +24,7 @@ class VagasRemanescentesCreches extends React.Component {
             localidade_escolhida_label: '',
             carregado: undefined,
             erro_carregamento_lista_de_escolas: false,
-        }
+        };
 
         PubSub.publish("mostraLinkHome", true);
     }
@@ -57,14 +57,15 @@ class VagasRemanescentesCreches extends React.Component {
             url_consulta = `${URL_API_VAGANACRECHE_HOM}/vaga/${this.state.serie_vagas}/?filtro=${this.state.filtro}&busca=${this.state.busca}`
         }
 
-        Axios.get(`${url_consulta}`)
+        ConectarApi.logarSemAutenticacao(url_consulta, 'get')
+
             .then(resposta => {
                 this.setState({lista_escolas_raio_serie: resposta.data.escolas})
                 this.setState({quantidade_de_creches: resposta.data.escolas.length})
                 this.setState({carregado: true});
             }).catch(error => {
-            this.setState({carregado: true});
-            this.setState({erro_carregamento_lista_de_escolas: true});
+                this.setState({carregado: true});
+                this.setState({erro_carregamento_lista_de_escolas: true});
 
         });
     }
