@@ -7,7 +7,7 @@ const ConectarApi = {
         const options = {
             method: verbo,
             url: endereco,
-            data: dados
+            data: dados,
         };
 
         // send the request
