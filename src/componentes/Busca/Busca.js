@@ -1,6 +1,7 @@
 import React from 'react';
-import Axios from 'axios'
 import {Link} from "react-router-dom";
+
+import ConectarApi from "../../services/ConectarApi";
 
 import calculaSerieEnsino from '../../utils/CalculaSerieEnsino';
 import SelectData from '../../utils/SelectData';
@@ -74,8 +75,10 @@ class Busca extends React.Component {
         this.setState({endereco: endereco_pesquisado});
         localStorage.setItem('endereco', endereco_pesquisado);
 
-        Axios.get(endereco_api_consulta)
+        ConectarApi.logarSemAutenticacao(endereco_api_consulta, 'get')
+
             .then(resposta => {
+                //console.log("entrei aqui then ", retorno_conectar)
 
                 this.setState({enderecos_retornados: resposta.data.features});
 
@@ -90,7 +93,13 @@ class Busca extends React.Component {
                     localStorage.setItem('longitude', resposta.data.features[0].geometry.coordinates[0]);
                     localStorage.setItem('latitude', resposta.data.features[0].geometry.coordinates[1]);
                 }
-            });
+
+            }).catch(erro => {
+                //console.log("entrei aqui then ", retorno_conectar)
+        });
+
+
+
 
     }
 
@@ -127,8 +136,8 @@ class Busca extends React.Component {
 
                         <div className="col-12 col-lg-6">
                             <SelectData
-                                atributo_mes = "mes_aniversario"
-                                atributo_ano = "ano_aniversario"
+                                atributo_mes="mes_aniversario"
+                                atributo_ano="ano_aniversario"
                                 mes_aniversario={this.state.mes_aniversario}
                                 ano_aniversario={this.state.ano_aniversario}
                                 onChange={this.setAtributosCampos}

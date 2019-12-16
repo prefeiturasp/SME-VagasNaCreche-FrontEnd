@@ -1,6 +1,6 @@
 import React from 'react'
 
-import logoEscolaAberta from "../../img/escola_aberta.png";
+import logoVagaNaCreche from "../../img/logotipo-vaga-na-creche.png";
 import Busca from '../Busca/Busca'
 import BlocoDeConteudos from './BlocosDeConteudo'
 import PubSub from "pubsub-js";
@@ -16,7 +16,7 @@ const Home = () => {
                     <div className="conteudo">
                         <div className="col-lg-12 col-sm-12 mt-5 pr-0 pl-0 text-center m-auto ">
                             <img
-                                src={logoEscolaAberta}
+                                src={logoVagaNaCreche}
                                 alt="Escola Aberta"
                                 className="mb-5"
                             />

@@ -1,14 +1,13 @@
 import React from 'react'
-import Axios from "axios";
 import PubSub from 'pubsub-js'
-import {Link} from "react-router-dom";
 import ConsultarNovamente from "../../utils/ConsultarNovamente";
+
+import ConectarApi from "../../services/ConectarApi";
 
 import BarraSuperior from '../../utils/BarraSuperior'
 import TabelaCreches from '../../utils/TabelaCreches'
 import Loading from '../../utils/Loading'
 import Mapa from '../Mapa/Mapa'
-import './creche.css'
 
 const URL_API_VAGANACRECHE_HOM = process.env.REACT_APP_API_VAGANACRECHE_HOM;
 
@@ -26,6 +25,7 @@ class Creches extends React.Component {
             dt_atualizacao: new Date(),
             fila_de_espera: 0,
             qtde_escolas: 0,
+            lista_escolas_raio_serie: false,
             esconderLinkBuscaEscola: true,
             carregado: undefined,
             erro_carregamento_lista_de_escolas: false,
@@ -42,18 +42,12 @@ class Creches extends React.Component {
             this.setState({endereco: this.props.location.params.endereco})
             this.setState({latitude: this.props.location.params.latitude})
             this.setState({longitude: this.props.location.params.longitude})
-console.log("Ollyver dc serie ensino ", this.props.location.params.dc_serie_ensino)
-console.log("Ollyver serie ", this.props.location.params.serie)
-console.log("Ollyver endereco ", this.props.location.params.endereco)
-console.log("Ollyver latitude ", this.props.location.params.latitude)
-console.log("Ollyver longitude ",this.props.location.params.longitude)
 
-            // Enviando parametros de pesquisa para gravar na API
-            Axios.post(`${URL_API_VAGANACRECHE_HOM}/pesquisa/historico_busca_end/`, {cd_serie_ensino: this.props.location.params.serie, latitude:this.props.location.params.latitude, longitude:this.props.location.params.longitude})
-            .then(resposta => {
-                    console.log("Sucesso em gravar pesquisa na APi")
-                }).catch(error => {
-                console.log("Erro ao gravar pesquisa na APi - ", error)
+
+            ConectarApi.logarSemAutenticacao(`${URL_API_VAGANACRECHE_HOM}/pesquisa/historico_busca_end/`, 'post', {
+                cd_serie: this.props.location.params.serie,
+                latitude: this.props.location.params.latitude,
+                longitude: this.props.location.params.longitude
             })
 
         } else {
@@ -70,7 +64,8 @@ console.log("Ollyver longitude ",this.props.location.params.longitude)
 
     componentDidMount() {
 
-        Axios.get(`${URL_API_VAGANACRECHE_HOM}/fila/espera_escola_raio/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`)
+        ConectarApi.logarSemAutenticacao(`${URL_API_VAGANACRECHE_HOM}/fila/espera_escola_raio/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`, 'get')
+
             .then(resposta => {
                 this.setState({lista_escolas_raio_serie: resposta.data.escolas});
                 this.setState({qtde_escolas: resposta.data.escolas.length});
@@ -79,8 +74,8 @@ console.log("Ollyver longitude ",this.props.location.params.longitude)
 
                 this.setState({carregado: true});
             }).catch(error => {
-            this.setState({carregado: true});
-            this.setState({erro_carregamento_lista_de_escolas: true});
+                this.setState({carregado: true});
+                this.setState({erro_carregamento_lista_de_escolas: true});
         });
     }
 
@@ -97,7 +92,6 @@ console.log("Ollyver longitude ",this.props.location.params.longitude)
 
     render() {
         const data_formatada = this.convertDateTime(this.state.dt_atualizacao)
-
         return (
             <div>
 
@@ -111,7 +105,7 @@ console.log("Ollyver longitude ",this.props.location.params.longitude)
                         null
                     }
 
-                    {this.state.lista_escolas_raio_serie ? (
+                    {this.state.lista_escolas_raio_serie.length > 0 ?  (
 
                         <div className="row">
                             <div className="col-12 col-lg-6 mt-5">
@@ -120,6 +114,7 @@ console.log("Ollyver longitude ",this.props.location.params.longitude)
                                     distribuídas nos <strong>{this.state.qtde_escolas}</strong> Centros de Educação
                                     Infantil (CEIs) perto de <strong>{this.state.endereco}</strong>
                                 </p>
+                                <p className="fonte-16">O total de crianças aguardando vaga na região é menor que a soma do total de crianças aguardando vaga em cada Centro de Educação Infantil porque uma mesma criança costuma constar no cadastro de espera de várias unidades.</p>
                                 <p className="fonte-16">Estes dados foram atualizados em {data_formatada}</p>
 
                                 <TabelaCreches
@@ -136,26 +131,23 @@ console.log("Ollyver longitude ",this.props.location.params.longitude)
                                 <Mapa
                                     lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
                                     dc_serie_ensino={this.state.dc_serie_ensino}
-                                    zoom_inicial={14}
+                                    zoom_inicial={15}
+                                    parametro_total_creches="total"
                                     classe_css="mapa-creche h-80"
                                 />
 
                             </div>
                         </div>
 
-                    ) : null}
-
-                    {this.state.erro_carregamento_lista_de_escolas ? (
-
-
-
-                        <div className="col-12 col-md-6 mt-5 mb-5">
+                    ) :
+                    this.state.erro_carregamento_lista_de_escolas ||  this.state.lista_escolas_raio_serie.length <= 0 ? (
+                    <div className="col-12 col-md-6 mt-5 mb-5">
 
                             <ConsultarNovamente
-                                texto="Não foi encontrado nenhum resultado. Por favor tente uma nova pesquisa"
+                                texto={`Não há Centros de Educação Infantil que atendem ${this.state.dc_serie_ensino} a 1,5 Km de distância de ${this.state.endereco}`}
                                 link_to="/"
                                 classe_css_btn='btn btn-outline-primary rounded-pill'
-                                texto_btn = "Consultar novamente"
+                                texto_btn="Consultar novamente"
                             />
                         </div>
                     ) : null}

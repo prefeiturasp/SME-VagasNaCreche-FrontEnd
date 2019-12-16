@@ -1,3 +1,4 @@
+@import "../styles/variaveis";
 .icon-tabela-creches path {
     fill: #00A6E2;
 }
@@ -19,8 +20,6 @@
     border-bottom-left-radius: 35px;
     border-bottom-right-radius: 35px;
     border-top-right-radius: 35px;
-
-
     cursor: pointer;
     width: 2em;
     height: 2em;
@@ -38,13 +37,29 @@
     vertical-align: bottom;
 }
 
-.btn-outline-primary{
-    border: 2px solid #196CBD;
-    color: #196CBD;
-}
+.overflow-auto {
+    .tabela-escolas {
+      font-size: 0.8rem;
+
+      tr {
+        &.collapsing,
+        &.collapse {
+          background: $corAzulBackgroundTable;
+        }
+      }
+
+      .fa-chevron-down[aria-expanded="true"] {
+        transform: rotate(180deg);
+      }
+
+      tr[aria-expanded="true"] {
+        background: $corAzulBackgroundTable;
+      }
+    }
+  }
 
 @media (min-width: 991px) {
     .tabela-escolas-div {
-        height: 803px;
+        max-height: 803px;
     }
 }
