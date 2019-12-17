@@ -36,7 +36,7 @@ class VagasRemanescentes extends React.Component {
         PubSub.publish("mostraLinkHome", true);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         ConectarApi.logarSemAutenticacao(`${URL_API_VAGANACRECHE_HOM}/vaga/filtros/`, 'get')
             .then(resposta => {
                 this.setState({localidades: resposta.data})

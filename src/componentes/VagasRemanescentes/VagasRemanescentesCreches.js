@@ -22,6 +22,7 @@ class VagasRemanescentesCreches extends React.Component {
             lista_escolas_raio_serie: false,
             quantidade_de_creches: '',
             localidade_escolhida_label: '',
+            total_vagas_remanescentes: '',
             carregado: undefined,
             erro_carregamento_lista_de_escolas: false,
         };
@@ -29,7 +30,13 @@ class VagasRemanescentesCreches extends React.Component {
         PubSub.publish("mostraLinkHome", true);
     }
 
-    componentWillMount() {
+    somaVagasRemanescentes = (resposta) => {
+        // Desconstruindo o objeto
+        return resposta.data.escolas.map(({vagas_remanescente}) => vagas_remanescente)
+            .reduce((a, b) => a + b, 0)
+    };
+
+    UNSAFE_componentWillMount() {
 
         if (this.props.location.params) {
             this.setState({serie_vagas: this.props.location.params.serie_vagas})
@@ -60,15 +67,19 @@ class VagasRemanescentesCreches extends React.Component {
         ConectarApi.logarSemAutenticacao(url_consulta, 'get')
 
             .then(resposta => {
+
+                const soma = this.somaVagasRemanescentes(resposta)
+                this.setState({total_vagas_remanescentes: soma})
                 this.setState({lista_escolas_raio_serie: resposta.data.escolas})
                 this.setState({quantidade_de_creches: resposta.data.escolas.length})
                 this.setState({carregado: true});
             }).catch(error => {
-                this.setState({carregado: true});
-                this.setState({erro_carregamento_lista_de_escolas: true});
+            this.setState({carregado: true});
+            this.setState({erro_carregamento_lista_de_escolas: true});
 
         });
     }
+
 
     atualizarMapa(escola, latitude, longitude) {
         PubSub.publish("escola", escola);
@@ -91,60 +102,62 @@ class VagasRemanescentesCreches extends React.Component {
 
                     {this.state.lista_escolas_raio_serie.length > 0 ? (
 
-                        <div className="row">
-                            <div className="col-12 col-lg-6 mt-5">
+                            <div className="row">
+                                <div className="col-12 col-lg-6 mt-5">
 
-                                <p className='fonte-16'>
-                                    Há <strong>{this.state.quantidade_de_creches}</strong> Centro de Educação Infantil
-                                    em <strong>{this.state.localidade_escolhida_label}</strong> com vagas disponíveis
-                                    no <strong>{this.state.dc_serie_ensino_vagas}</strong>.
-                                </p>
+                                    <p className='fonte-16'>
+                                        Há <strong>{this.state.quantidade_de_creches}</strong> Centro de Educação Infantil
+                                        em <strong>{this.state.localidade_escolhida_label}</strong> com <strong>{this.state.total_vagas_remanescentes}</strong> vagas disponíveis
+                                        no <strong>{this.state.dc_serie_ensino_vagas}</strong>.
+                                    </p>
 
 
-                                <TabelaCreches
-                                    lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
-                                    cabecalho={["Nome da escola", "Tipo", "Vagas remanescentes no"]}
-                                    cabecalho_concat={this.state.dc_serie_ensino_vagas}
-                                    cabecalho_posicao_concat={2}
-                                    parametro_total_creches="vagas_remanescente"
-                                    atualizarMapa={this.atualizarMapa}
-                                />
-
-                                <div className="text-center mb-5 mt-5">
-                                    <ConsultarNovamente
-                                        texto=""
-                                        link_to="/vagas-remanescentes"
-                                        classe_css_btn='btn btn-outline-primary rounded-pill'
-                                        texto_btn="Consultar novamente"
+                                    <TabelaCreches
+                                        lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
+                                        cabecalho={["Nome da escola", "Tipo", "Vagas remanescentes no"]}
+                                        cabecalho_concat={this.state.dc_serie_ensino_vagas}
+                                        cabecalho_posicao_concat={2}
+                                        parametro_total_creches="vagas_remanescente"
+                                        atualizarMapa={this.atualizarMapa}
                                     />
+
+                                    <div className="text-center mb-5 mt-5">
+                                        <ConsultarNovamente
+                                            texto=""
+                                            link_to="/vagas-remanescentes"
+                                            classe_css_btn='btn btn-outline-primary rounded-pill'
+                                            texto_btn="Consultar novamente"
+                                        />
+                                    </div>
+
                                 </div>
 
+                                <div className="col-lg-6 col-lg-6 mapa-completo">
+
+                                    <Mapa
+                                        lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
+                                        dc_serie_ensino={this.state.dc_serie_ensino_vagas}
+                                        zoom_inicial={10}
+                                        parametro_total_creches="vagas_remanescente"
+                                        classe_css="mapa-vagas-remanescentes-creches"
+                                        texto_detalhe_pin="vagas disponíveis em"
+
+                                    />
+
+                                </div>
                             </div>
+                        ) :
 
-                            <div className="col-lg-6 col-lg-6 mapa-completo">
-
-                                <Mapa
-                                    lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
-                                    dc_serie_ensino={this.state.dc_serie_ensino_vagas}
-                                    zoom_inicial={10}
-                                    parametro_total_creches="vagas_remanescente"
-                                    classe_css="mapa-vagas-remanescentes-creches"
-                                />
-
-                            </div>
-                        </div>
-                    ) :
-
-                        this.state.erro_carregamento_lista_de_escolas ||  this.state.lista_escolas_raio_serie.length <= 0 ? (
+                        this.state.erro_carregamento_lista_de_escolas || this.state.lista_escolas_raio_serie.length <= 0 ? (
                             <div className="col-12 col-md-6 mt-5 mb-5">
 
-                            <ConsultarNovamente
-                                texto="No momento, não há vagas remanescentes no território selecionado."
-                                link_to="/vagas-remanescentes"
-                                classe_css_btn='btn btn-outline-primary rounded-pill'
-                                texto_btn="Consultar novamente"
-                            />
-                        </div>
+                                <ConsultarNovamente
+                                    texto="No momento, não há vagas remanescentes no território selecionado."
+                                    link_to="/vagas-remanescentes"
+                                    classe_css_btn='btn btn-outline-primary rounded-pill'
+                                    texto_btn="Consultar novamente"
+                                />
+                            </div>
 
                         ) : null
 

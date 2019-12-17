@@ -34,7 +34,7 @@ class Creches extends React.Component {
         PubSub.publish("mostraLinkHome", true);
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
 
         if (this.props.location.params) {
             this.setState({dc_serie_ensino: this.props.location.params.dc_serie_ensino})
@@ -134,6 +134,7 @@ class Creches extends React.Component {
                                     zoom_inicial={15}
                                     parametro_total_creches="total"
                                     classe_css="mapa-creche h-80"
+                                    texto_detalhe_pin="crianças aguardando no"
                                 />
 
                             </div>

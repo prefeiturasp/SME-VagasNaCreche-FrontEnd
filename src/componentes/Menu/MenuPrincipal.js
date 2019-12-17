@@ -11,7 +11,7 @@ class MenuPrincipal extends React.Component {
         this.state = {mostraLinkHome: false}
     }
 
-    componentWillMount() {
+    UNSAFE_componentWillMount() {
         PubSub.subscribe(
             "mostraLinkHome", function (topico, mostraLinkHome) {
                 this.setState({mostraLinkHome: mostraLinkHome})
