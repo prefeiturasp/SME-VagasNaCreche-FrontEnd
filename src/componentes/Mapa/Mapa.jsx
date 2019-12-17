@@ -66,8 +66,6 @@ export default class Mapa extends Component {
     }
 
     render() {
-
-        console.log("Ollyver Mapa ", this.props.texto_detalhe_pin)
         return (
             <div className={`${this.props.classe_css}`}>
                 <Map

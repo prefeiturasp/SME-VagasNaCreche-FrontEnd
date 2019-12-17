@@ -78,7 +78,6 @@ class Busca extends React.Component {
         ConectarApi.logarSemAutenticacao(endereco_api_consulta, 'get')
 
             .then(resposta => {
-                //console.log("entrei aqui then ", retorno_conectar)
 
                 this.setState({enderecos_retornados: resposta.data.features});
 
@@ -95,7 +94,6 @@ class Busca extends React.Component {
                 }
 
             }).catch(erro => {
-                //console.log("entrei aqui then ", retorno_conectar)
         });
 
 
