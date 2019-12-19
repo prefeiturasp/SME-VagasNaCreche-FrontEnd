@@ -1,0 +1,65 @@
+@import "../styles/variaveis";
+.icon-tabela-creches path {
+    fill: #00A6E2;
+}
+
+.bg-linha-detalhe{
+    background-color: #F6FBFF;
+}
+
+.tr-tabela-creches:hover{
+    cursor: pointer;
+}
+
+.td-tabela-creches-sem-borda{
+    border: none !important;
+}
+.container-icon-tabela-creches{
+
+    border-top-left-radius: 35px;
+    border-bottom-left-radius: 35px;
+    border-bottom-right-radius: 35px;
+    border-top-right-radius: 35px;
+    cursor: pointer;
+    width: 2em;
+    height: 2em;
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+.container-icon-tabela-creches:hover{
+    background-color: #C2ECFC;
+
+}
+
+.container-icon-tabela-creches svg{
+    height: 1em;
+    vertical-align: bottom;
+}
+
+.overflow-auto {
+    .tabela-escolas {
+      font-size: 0.8rem;
+
+      tr {
+        &.collapsing,
+        &.collapse {
+          background: $corAzulBackgroundTable;
+        }
+      }
+
+      .fa-chevron-down[aria-expanded="true"] {
+        transform: rotate(180deg);
+      }
+
+      tr[aria-expanded="true"] {
+        background: $corAzulBackgroundTable;
+      }
+    }
+  }
+
+@media (min-width: 991px) {
+    .tabela-escolas-div {
+        max-height: 803px;
+    }
+}
