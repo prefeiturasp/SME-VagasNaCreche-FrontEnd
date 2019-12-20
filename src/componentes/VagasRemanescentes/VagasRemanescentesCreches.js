@@ -140,7 +140,7 @@ class VagasRemanescentesCreches extends React.Component {
                                         zoom_inicial={10}
                                         parametro_total_creches="vagas_remanescente"
                                         classe_css="mapa-vagas-remanescentes-creches"
-                                        texto_detalhe_pin="vagas disponíveis em"
+                                        texto_detalhe_pin="vagas disponíveis em "
 
                                     />
 
