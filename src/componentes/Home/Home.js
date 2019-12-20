@@ -17,7 +17,7 @@ const Home = () => {
                         <div className="col-lg-12 col-sm-12 mt-5 pr-0 pl-0 text-center m-auto ">
                             <img
                                 src={logoVagaNaCreche}
-                                alt="Escola Aberta"
+                                alt="Vaga na Creche"
                                 className="mb-5"
                             />
                             <h2>
