@@ -1,9 +1,9 @@
 import React from 'react'
 import PubSub from 'pubsub-js'
+
+import ConvertDateTime from "../../utils/ConvertDateTime";
 import ConsultarNovamente from "../../utils/ConsultarNovamente";
-
 import ConectarApi from "../../services/ConectarApi";
-
 import BarraSuperior from '../../utils/BarraSuperior'
 import TabelaCreches from '../../utils/TabelaCreches'
 import Loading from '../../utils/Loading'
@@ -58,7 +58,7 @@ class Creches extends React.Component {
             this.setState({longitude: localStorage.getItem('longitude')})
         }
 
-        this.convertDateTime.bind(this)
+        //this.convertDateTime.bind(this)
 
     }
 
@@ -85,13 +85,13 @@ class Creches extends React.Component {
         PubSub.publish("longitude", longitude);
     }
 
-    convertDateTime(data) {
+/*    convertDateTime(data) {
         const date = new Date(data);
         return date.toLocaleDateString('pt-BR') + " às " + date.toLocaleTimeString('pt-BR');
-    }
+    }*/
 
     render() {
-        const data_formatada = this.convertDateTime(this.state.dt_atualizacao)
+        const data_formatada = ConvertDateTime.exibirDateTimeFormatada(this.state.dt_atualizacao)
         return (
             <div>
 

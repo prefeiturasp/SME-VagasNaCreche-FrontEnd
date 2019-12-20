@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react'
 import PubSub from "pubsub-js";
+import ConvertDateTime from "../../utils/ConvertDateTime";
 import TabelaCreches from "../../utils/TabelaCreches";
 import BarraSuperior from "../../utils/BarraSuperior";
 import Mapa from "../Mapa/Mapa";
@@ -20,6 +21,7 @@ class VagasRemanescentesCreches extends React.Component {
             busca: '',
             dc_serie_ensino_vagas: '',
             lista_escolas_raio_serie: false,
+            dt_atualizacao: new Date(),
             quantidade_de_creches: '',
             localidade_escolhida_label: '',
             total_vagas_remanescentes: '',
@@ -67,7 +69,6 @@ class VagasRemanescentesCreches extends React.Component {
         ConectarApi.logarSemAutenticacao(url_consulta, 'get')
 
             .then(resposta => {
-
                 const soma = this.somaVagasRemanescentes(resposta)
                 this.setState({total_vagas_remanescentes: soma})
                 this.setState({lista_escolas_raio_serie: resposta.data.escolas})
@@ -76,8 +77,18 @@ class VagasRemanescentesCreches extends React.Component {
             }).catch(error => {
             this.setState({carregado: true});
             this.setState({erro_carregamento_lista_de_escolas: true});
+        });
+
+        let url_consulta_data_atualizacao = `${URL_API_VAGANACRECHE_HOM}/fila/espera_escola_raio/-23.595418/-46.648723/4`
+
+        ConectarApi.logarSemAutenticacao(url_consulta_data_atualizacao, 'get')
+
+            .then(resposta => {
+                this.setState({dt_atualizacao: resposta.data.dt_atualizacao});
+            }).catch(error => {
 
         });
+
     }
 
 
@@ -88,6 +99,7 @@ class VagasRemanescentesCreches extends React.Component {
     }
 
     render() {
+        const data_formatada = ConvertDateTime.exibirDateTimeFormatada(this.state.dt_atualizacao)
         return (
             <Fragment>
                 <BarraSuperior texto="Quer saber onde há vagas disponíveis?" filtro={false}/>
@@ -110,7 +122,7 @@ class VagasRemanescentesCreches extends React.Component {
                                         em <strong>{this.state.localidade_escolhida_label}</strong> com <strong>{this.state.total_vagas_remanescentes}</strong> vagas disponíveis
                                         no <strong>{this.state.dc_serie_ensino_vagas}</strong>.
                                     </p>
-
+                                    <p className="fonte-16">Estes dados foram atualizados em {data_formatada}</p>
 
                                     <TabelaCreches
                                         lista_escolas_raio_serie={this.state.lista_escolas_raio_serie}
@@ -141,7 +153,6 @@ class VagasRemanescentesCreches extends React.Component {
                                         parametro_total_creches="vagas_remanescente"
                                         classe_css="mapa-vagas-remanescentes-creches"
                                         texto_detalhe_pin="vagas disponíveis em "
-
                                     />
 
                                 </div>
