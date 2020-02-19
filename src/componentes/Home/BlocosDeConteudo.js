@@ -33,7 +33,7 @@ const BlocosDeConteudo = () => (
 
                         <h2 className="mb-4">A criança já está cadastrada à espera de uma vaga?</h2>
                         <p className="mb-0">
-                            No endereço bit.ly/consultavaganacreche é possível consultar a posição da criança na espera por uma vaga em cada Centros de Educação Infantil constante no seu cadastro <a className="text-white" href="http://eolgerenciamento.prefeitura.sp.gov.br/se1426g/frmgerencial/ConsultaPosicaoIndividual.aspx?Cod=000000"> <u><strong>(ir para Consulta de Posição Individual)</strong></u></a>.
+                            No endereço <a className="text-white" title="Link externo para consultar a posição da criança na espera por uma vaga" href="http://eolgerenciamento.prefeitura.sp.gov.br/se1426g/frmgerencial/ConsultaPosicaoIndividual.aspx?Cod=000000">bit.ly/consultavaganacreche</a> é possível consultar a posição da criança na espera por uma vaga em cada Centro de Educação Infantil constante no seu cadastro <a className="text-white" href="http://eolgerenciamento.prefeitura.sp.gov.br/se1426g/frmgerencial/ConsultaPosicaoIndividual.aspx?Cod=000000"> <u><strong>(ir para Consulta de Posição Individual)</strong></u></a>.
                         </p>
                     </div>
                     <div className="col-12 offset-lg-1 col-md-6 col-lg-5">
