@@ -30,22 +30,22 @@ class App extends React.Component {
     }
 
     alterarFonte() {
-    const alterarFonte =
-      localStorage.getItem("alterarFonte") !== null
-        ? localStorage.getItem("alterarFonte") !== "true"
-        : true;
-    localStorage.setItem("alterarFonte", alterarFonte);
-    this.setState({ alterarFonte });
-  }
+        const alterarFonte =
+            localStorage.getItem("alterarFonte") !== null
+                ? localStorage.getItem("alterarFonte") !== "true"
+                : true;
+        localStorage.setItem("alterarFonte", alterarFonte);
+        this.setState({ alterarFonte });
+    }
 
-  alterarContraste() {
-    const alterarContraste =
-      localStorage.getItem("alterarContraste") !== null
-        ? localStorage.getItem("alterarContraste") !== "true"
-        : true;
-    localStorage.setItem("alterarContraste", alterarContraste);
-    this.setState({ alterarContraste });
-  }
+    alterarContraste() {
+        const alterarContraste =
+            localStorage.getItem("alterarContraste") !== null
+                ? localStorage.getItem("alterarContraste") !== "true"
+                : true;
+        localStorage.setItem("alterarContraste", alterarContraste);
+        this.setState({ alterarContraste });
+    }
 
     render() {
         const { alterarFonte, alterarContraste } = this.state;
@@ -62,3 +62,4 @@ class App extends React.Component {
 }
 
 export default App;
+
