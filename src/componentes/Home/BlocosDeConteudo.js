@@ -14,7 +14,7 @@ const BlocosDeConteudo = () => (
                             Quer entender melhor como solicitar uma vaga na creche?
                         </h2>
                         <p className="mb-0">
-                            O Portal da Secretaria Municipal de Educação explica de maneira didática o passo a passo para se solicitar uma vaga e fazer matrícula nas creches municipais, que são os Centros de Educação Infantil (CEIs) <a href="https://educacao.sme.prefeitura.sp.gov.br/coordenadoria-de-gestao-e-organizacao-educacional-coged/solicitacao-de-vaga-e-matricula/">(ir para Solicitação de Vaga e Matrícula).</a>
+                        Desde 20 de junho de 2020, é possível fazer a solicitação online <a href="https://cadastroinfantil.sme.prefeitura.sp.gov.br/"> (clique aqui para solicitar a vaga).</a>  O Portal da Secretaria Municipal de Educação explica o passo a passo sobre a matrícula nas creches municipais, que são os Centros de Educação Infantil (CEIs) <a href="https://educacao.sme.prefeitura.sp.gov.br/coordenadoria-de-gestao-e-organizacao-educacional-coged/solicitacao-de-vaga-e-matricula/">(ir para Solicitação de Vaga e Matrícula).</a>
                         </p>
                     </div>
                     <div className="col-12 col-md-6 col-lg-5 mb-3">
