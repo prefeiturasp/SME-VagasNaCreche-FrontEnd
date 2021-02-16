@@ -8,7 +8,7 @@ import SelectData from '../../utils/SelectData';
 import GetEnderecoAutocomplete from '../../utils/GetEnderecoAutocomplete'
 import TrataErros from '../../utils/TrataErros'
 
-const URL_API_ENDERECO = process.env.REACT_APP_API_ENDERECO;
+const URL_API_ENDERECO = process.env.API_ENDERECO;
 
 // Simulando um Helper
 const isButtonDisabled = (texto) => {

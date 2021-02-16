@@ -9,7 +9,7 @@ import TabelaCreches from '../../utils/TabelaCreches'
 import Loading from '../../utils/Loading'
 import Mapa from '../Mapa/Mapa'
 
-const URL_API_VAGANACRECHE_HOM = process.env.REACT_APP_API_VAGANACRECHE_HOM;
+const URL_API_VAGANACRECHE_HOM = process.env.REACT_API_URL;
 
 class Creches extends React.Component {
 
