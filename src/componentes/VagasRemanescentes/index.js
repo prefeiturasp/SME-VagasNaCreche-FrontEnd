@@ -10,7 +10,7 @@ import TrataErros from "../../utils/TrataErros";
 import {Link} from "react-router-dom";
 import ConectarApi from "../../services/ConectarApi";
 
-const URL_API_VAGANACRECHE_HOM = process.env.REACT_API_URL;
+const URL_API_VAGANACRECHE_HOM = "REPLACE_API_URL";
 
 class VagasRemanescentes extends React.Component {
 
