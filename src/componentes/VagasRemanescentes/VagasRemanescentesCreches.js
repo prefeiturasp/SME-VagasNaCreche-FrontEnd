@@ -8,7 +8,7 @@ import Loading from "../../utils/Loading";
 import ConsultarNovamente from "../../utils/ConsultarNovamente";
 import ConectarApi from "../../services/ConectarApi";
 
-const URL_API_VAGANACRECHE_HOM = process.env.REACT_APP_API_VAGANACRECHE_HOM;
+const URL_API_VAGANACRECHE_HOM = "REPLACE_API_URL";
 
 class VagasRemanescentesCreches extends React.Component {
 
