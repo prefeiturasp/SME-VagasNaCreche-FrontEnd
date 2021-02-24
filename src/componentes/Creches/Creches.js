@@ -9,7 +9,11 @@ import TabelaCreches from '../../utils/TabelaCreches'
 import Loading from '../../utils/Loading'
 import Mapa from '../Mapa/Mapa'
 
-const URL_API_VAGANACRECHE_HOM = "REPLACE_API_URL";
+let API_URL = "REPLACE_API_URL";
+
+if (process.env.REACT_APP_NODE_ENV === "local") {
+    API_URL = process.env.REACT_APP_API_VAGANACRECHE_HOM;
+}
 
 class Creches extends React.Component {
 
@@ -44,7 +48,7 @@ class Creches extends React.Component {
             this.setState({longitude: this.props.location.params.longitude})
 
 
-            ConectarApi.logarSemAutenticacao(`${URL_API_VAGANACRECHE_HOM}/pesquisa/historico_busca_end/`, 'post', {
+            ConectarApi.logarSemAutenticacao(`${API_URL}/pesquisa/historico_busca_end/`, 'post', {
                 cd_serie: this.props.location.params.serie,
                 latitude: this.props.location.params.latitude,
                 longitude: this.props.location.params.longitude
@@ -64,7 +68,7 @@ class Creches extends React.Component {
 
     componentDidMount() {
 
-        ConectarApi.logarSemAutenticacao(`${URL_API_VAGANACRECHE_HOM}/fila/espera_escola_raio/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`, 'get')
+        ConectarApi.logarSemAutenticacao(`${API_URL}/fila/espera_escola_raio/${this.state.latitude}/${this.state.longitude}/${this.state.serie}`, 'get')
 
             .then(resposta => {
                 this.setState({lista_escolas_raio_serie: resposta.data.escolas});
