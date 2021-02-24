@@ -1,7 +1,11 @@
 import React from 'react'
 import imgCeus from '../../img/cei_10.jpg'
 import imgPhone from '../../img/phone.png'
-const URL_VIDEO = "REPLACE_URL_VIDEO";
+let URL_VIDEO = "REPLACE_URL_VIDEO";
+
+if (process.env.REACT_APP_NODE_ENV === "local") {
+    URL_VIDEO = process.env.REACT_APP_URL_VIDEO;
+}
 
 const BlocosDeConteudo = () => (
 
