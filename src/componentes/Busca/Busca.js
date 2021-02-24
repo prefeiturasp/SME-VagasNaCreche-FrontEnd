@@ -8,7 +8,11 @@ import SelectData from '../../utils/SelectData';
 import GetEnderecoAutocomplete from '../../utils/GetEnderecoAutocomplete'
 import TrataErros from '../../utils/TrataErros'
 
-const URL_API_ENDERECO = "REPLACE_API_ENDERECO";
+let API_ENDERECO = "REPLACE_API_ENDERECO";
+
+if (process.env.REACT_APP_NODE_ENV === "local") {
+    API_ENDERECO = process.env.REACT_APP_API_ENDERECO;
+}
 
 // Simulando um Helper
 const isButtonDisabled = (texto) => {
@@ -71,7 +75,7 @@ class Busca extends React.Component {
     handleChange(event) {
         // Para montar o autocomplete
         const endereco_pesquisado = event.target.value;
-        const endereco_api_consulta = `${URL_API_ENDERECO}/v1/search?text=${endereco_pesquisado}&size=10&boundary.gid=whosonfirst:locality:101965533`
+        const endereco_api_consulta = `${API_ENDERECO}/v1/search?text=${endereco_pesquisado}&size=10&boundary.gid=whosonfirst:locality:101965533`
         this.setState({endereco: endereco_pesquisado});
         localStorage.setItem('endereco', endereco_pesquisado);
 

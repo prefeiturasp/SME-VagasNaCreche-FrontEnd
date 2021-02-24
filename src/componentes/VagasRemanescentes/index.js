@@ -10,7 +10,12 @@ import TrataErros from "../../utils/TrataErros";
 import {Link} from "react-router-dom";
 import ConectarApi from "../../services/ConectarApi";
 
-const URL_API_VAGANACRECHE_HOM = "REPLACE_API_URL";
+let API_URL = "REPLACE_API_URL";
+
+if (process.env.REACT_APP_NODE_ENV === "local") {
+    API_URL = process.env.REACT_APP_API_VAGANACRECHE_HOM;
+}
+
 
 class VagasRemanescentes extends React.Component {
 
@@ -37,7 +42,7 @@ class VagasRemanescentes extends React.Component {
     }
 
     UNSAFE_componentWillMount() {
-        ConectarApi.logarSemAutenticacao(`${URL_API_VAGANACRECHE_HOM}/vaga/filtros/`, 'get')
+        ConectarApi.logarSemAutenticacao(`${API_URL}/vaga/filtros/`, 'get')
             .then(resposta => {
                 this.setState({localidades: resposta.data})
             }).catch(error => {

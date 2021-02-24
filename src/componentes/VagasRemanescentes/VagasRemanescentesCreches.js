@@ -8,7 +8,11 @@ import Loading from "../../utils/Loading";
 import ConsultarNovamente from "../../utils/ConsultarNovamente";
 import ConectarApi from "../../services/ConectarApi";
 
-const URL_API_VAGANACRECHE_HOM = "REPLACE_API_URL";
+let API_URL = "REPLACE_API_URL";
+
+if (process.env.REACT_APP_NODE_ENV === "local") {
+    API_URL = process.env.REACT_APP_API_VAGANACRECHE_HOM;
+}
 
 class VagasRemanescentesCreches extends React.Component {
 
@@ -61,9 +65,9 @@ class VagasRemanescentesCreches extends React.Component {
         let url_consulta = ''
 
         if (this.state.busca === 'all') {
-            url_consulta = `${URL_API_VAGANACRECHE_HOM}/vaga/${this.state.serie_vagas}/?filtro=ALL`
+            url_consulta = `${API_URL}/vaga/${this.state.serie_vagas}/?filtro=ALL`
         } else {
-            url_consulta = `${URL_API_VAGANACRECHE_HOM}/vaga/${this.state.serie_vagas}/?filtro=${this.state.filtro}&busca=${this.state.busca}`
+            url_consulta = `${API_URL}/vaga/${this.state.serie_vagas}/?filtro=${this.state.filtro}&busca=${this.state.busca}`
         }
 
         ConectarApi.logarSemAutenticacao(url_consulta, 'get')
@@ -79,7 +83,7 @@ class VagasRemanescentesCreches extends React.Component {
             this.setState({erro_carregamento_lista_de_escolas: true});
         });
 
-        let url_consulta_data_atualizacao = `${URL_API_VAGANACRECHE_HOM}/fila/espera_escola_raio/-23.595418/-46.648723/4`
+        let url_consulta_data_atualizacao = `${API_URL}/fila/espera_escola_raio/-23.595418/-46.648723/4`
 
         ConectarApi.logarSemAutenticacao(url_consulta_data_atualizacao, 'get')
 
