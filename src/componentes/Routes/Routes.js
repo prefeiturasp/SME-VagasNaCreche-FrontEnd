@@ -5,7 +5,7 @@ import Creches from '../Creches/Creches'
 import VagasRemanescentes from "../VagasRemanescentes";
 import Page404 from "../Page404/Page404";
 import VagasRemanescentesCreches from "../VagasRemanescentes/VagasRemanescentesCreches";
-import {EmManutencao} from "../EmManutencao";
+import EmManutencao from "../EmManutencao";
 
 
 export default props => (
