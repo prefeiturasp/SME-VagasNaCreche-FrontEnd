@@ -5,6 +5,7 @@ import Creches from '../Creches/Creches'
 import VagasRemanescentes from "../VagasRemanescentes";
 import Page404 from "../Page404/Page404";
 import VagasRemanescentesCreches from "../VagasRemanescentes/VagasRemanescentesCreches";
+import {EmManutencao} from "../EmManutencao";
 
 
 export default props => (
@@ -12,7 +13,8 @@ export default props => (
         <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/creches" component={Creches} />
-            <Route path="/vagas-remanescentes" component={VagasRemanescentes} />
+            {/*<Route path="/vagas-remanescentes" component={VagasRemanescentes} />*/}
+            <Route path="/vagas-remanescentes" component={EmManutencao} />
             <Route path="/vagas-remanescentes-creches" component={VagasRemanescentesCreches} />
             <Route path="*" component={Page404}/>
         </Switch>
