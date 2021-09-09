@@ -14,6 +14,7 @@ export default props => (
             <Route path="/" exact component={Home} />
             <Route path="/creches" component={Creches} />
             {/*<Route path="/vagas-remanescentes" component={VagasRemanescentes} />*/}
+            <Route path="/vagas-remanescentes-alternativo" component={VagasRemanescentes} />
             <Route path="/vagas-remanescentes" component={EmManutencao} />
             <Route path="/vagas-remanescentes-creches" component={VagasRemanescentesCreches} />
             <Route path="*" component={Page404}/>
