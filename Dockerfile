@@ -1,7 +1,7 @@
 FROM node:12.13.0-alpine as build
 WORKDIR /app
 COPY . ./
-RUN npm install && npm run build
+RUN npm install && npm rebuild node-sass --force && npm run build
 
 
 FROM nginx:alpine
