@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Replace string in static files
 # sed -i "s/old-text/new-text/g" input.txt
 

@@ -1,10 +1,11 @@
-FROM node:12.13.0-alpine as build
+FROM node:12.13.0 as build
 WORKDIR /app
 COPY . ./
+#RUN apk update && apk add python2 make
 RUN npm install && npm rebuild node-sass --force && npm run build
 
 
-FROM nginx:alpine
+FROM nginx
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 COPY --from=build /app/build /usr/share/nginx/html
