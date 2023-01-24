@@ -87,19 +87,7 @@ pipeline {
     aborted { sendTelegram ("😥 Job Name: ${JOB_NAME} \nBuild: ${BUILD_DISPLAY_NAME} \nStatus: Aborted \nLog: \n${env.BUILD_URL}console") }
   }
 }
-def sendTelegram(message) {                sh 'npm install'
-27
-                sh 'npm install -g jshint'
-28
-                sh 'jshint --verbose --reporter=checkstyle src > checkstyle-jshint.xml || exit 0'
-29
-                checkstyle canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '**/checkstyle-jshint.xml', unHealthy: ''
-30
-                
-31
-            }
-32
-        }
+def sendTelegram(message) {
     def encodedMessage = URLEncoder.encode(message, "UTF-8")
     withCredentials([string(credentialsId: 'telegramToken', variable: 'TOKEN'),
     string(credentialsId: 'telegramChatId', variable: 'CHAT_ID')]) {
