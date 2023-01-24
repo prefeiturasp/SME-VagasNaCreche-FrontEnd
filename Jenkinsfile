@@ -21,15 +21,6 @@ pipeline {
             steps { checkout scm }            
         }
 
-        stage('Checkstyle') {
-          steps {
-                sh 'npm install'
-                sh 'npm install -g jshint'
-                sh 'jshint --verbose --reporter=checkstyle src > checkstyle-jshint.xml || exit 0'
-                checkstyle canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '**/checkstyle-jshint.xml', unHealthy: ''
-                
-            }
-        }
 
         stage('AnaliseCodigo') {
 	      when { branch 'homolog' }
