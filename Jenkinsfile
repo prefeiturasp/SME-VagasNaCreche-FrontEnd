@@ -3,10 +3,11 @@ pipeline {
       branchname =  env.BRANCH_NAME.toLowerCase()
       kubeconfig = getKubeconf(env.branchname)
       registryCredential = 'jenkins_registry'
+      namespace = "${env.branchname == 'develop' ? 'vaganacreche-dev' : env.branchname == 'homolog' ? 'vaganacreche-hom' : env.branchname == 'homolog-r2' ? 'vaganacreche-hom2' : 'sme-vaganacreche' }"
     }
   
     agent {
-      node { label 'AGENT-NODES' }
+      node { label 'node-10-rc' }
     }
 
     options {
@@ -21,9 +22,18 @@ pipeline {
             steps { checkout scm }            
         }
 
+        stage('Checkstyle') {
+          steps {
+                sh 'npm install'
+                sh 'npm install -g jshint'
+                sh 'jshint --verbose --reporter=checkstyle src > checkstyle-jshint.xml || exit 0'
+                checkstyle canComputeNew: false, defaultEncoding: '', healthy: '', pattern: '**/checkstyle-jshint.xml', unHealthy: ''
+                
+            }
+        }
 
         stage('AnaliseCodigo') {
-          when { branch 'homolog' }
+	      when { branch 'homolog' }
           steps {
               withSonarQubeEnv('sonarqube-local'){
                 sh 'echo "[ INFO ] Iniciando analise Sonar..." && sonar-scanner \
@@ -36,7 +46,7 @@ pipeline {
         
 
         stage('Build') {
-          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'dev'; branch 'develop'; branch 'development'; branch 'release'; branch 'homolog';  } } 
+          when { anyOf { branch 'master'; branch 'main'; branch "story/*"; branch 'develop'; branch 'development'; branch 'release'; branch 'homolog';  } } 
           steps {
             script {
               imagename1 = "registry.sme.prefeitura.sp.gov.br/${env.branchname}/vaganacreche-frontend"
@@ -52,9 +62,9 @@ pipeline {
             }
           }
         }
-        
+	    
         stage('Deploy'){
-            when { anyOf {  branch 'master'; branch 'main'; branch 'development'; branch 'develop'; branch 'dev'; branch 'release'; branch 'homolog';  } }        
+            when { anyOf {  branch 'master'; branch 'main'; branch 'development'; branch 'develop'; branch 'release'; branch 'homolog';  } }        
             steps {
                 script{
                     if ( env.branchname == 'main' ||  env.branchname == 'master' || env.branchname == 'homolog' || env.branchname == 'release' ) {
@@ -62,12 +72,18 @@ pipeline {
                         timeout(time: 24, unit: "HOURS") {
                             input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'ollyver_ottoboni, kelwy_oliveira, anderson_morais'
                         }
+                        withCredentials([file(credentialsId: "${kubeconfig}", variable: 'config')]){
+                            sh('cp $config '+"$home"+'/.kube/config')
+                            sh 'kubectl rollout restart deployment/vaganacreche-frontend -n ${namespace}'
+                            sh('rm -f '+"$home"+'/.kube/config')
+                        }
                     }
-                    withCredentials([file(credentialsId: "${kubeconfig}", variable: 'config')]){
-                        sh('if [ -f '+"$home"+'/.kube/config ];then rm -f '+"$home"+'/.kube/config; fi')
-                        sh('cp $config '+"$home"+'/.kube/config')
-                        sh 'kubectl rollout restart deployment/vaganacreche-frontend -n sme-vaganacreche'
-                        sh('if [ -f '+"$home"+'/.kube/config ];then rm -f '+"$home"+'/.kube/config; fi')
+                    else{
+                        withCredentials([file(credentialsId: "${kubeconfig}", variable: 'config')]){
+                            sh('cp $config '+"$home"+'/.kube/config')
+                            sh 'kubectl rollout restart deployment/vaganacreche-frontend -n ${namespace}'
+                            sh('rm -f '+"$home"+'/.kube/config')
+                        }
                     }
                 }
             }           
@@ -75,7 +91,6 @@ pipeline {
     }
 
   post {
-    always { sh('if [ -f '+"$home"+'/.kube/config ];then rm -f '+"$home"+'/.kube/config; fi')}
     success { sendTelegram("🚀 Job Name: ${JOB_NAME} \nBuild: ${BUILD_DISPLAY_NAME} \nStatus: Success \nLog: \n${env.BUILD_URL}console") }
     unstable { sendTelegram("💣 Job Name: ${JOB_NAME} \nBuild: ${BUILD_DISPLAY_NAME} \nStatus: Unstable \nLog: \n${env.BUILD_URL}console") }
     failure { sendTelegram("💥 Job Name: ${JOB_NAME} \nBuild: ${BUILD_DISPLAY_NAME} \nStatus: Failure \nLog: \n${env.BUILD_URL}console") }
@@ -97,9 +112,8 @@ def sendTelegram(message) {
 def getKubeconf(branchName) {
     if("main".equals(branchName)) { return "config_prd"; }
     else if ("master".equals(branchName)) { return "config_prd"; }
-    else if ("homolog".equals(branchName)) { return "config_hom"; }
-    else if ("release".equals(branchName)) { return "config_hom"; }
-    else if ("develop".equals(branchName)) { return "config_dev"; }
-    else if ("dev".equals(branchName)) { return "config_dev"; } 
-    else if ("development".equals(branchName)) { return "config_dev"; } 
+    else if ("homolog".equals(branchName)) { return "config_release"; }
+    else if ("release".equals(branchName)) { return "config_release"; }
+    else if ("develop".equals(branchName)) { return "config_release"; }
+    else if ("development".equals(branchName)) { return "config_release"; }	
 }
