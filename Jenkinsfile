@@ -26,6 +26,7 @@ pipeline {
 
         stage('Checkstyle') {
           steps {
+                checkout scm
                 sh 'npm install'
                 sh 'npm install -g jshint'
                 sh 'jshint --verbose --reporter=checkstyle src > checkstyle-jshint.xml || exit 0'
