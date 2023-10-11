@@ -7,8 +7,8 @@ pipeline {
     }
   
     agent { kubernetes { 
-              label 'builder'
-              defaultContainer 'builder'
+              label 'agt-10-vaga'
+              defaultContainer 'agt-10-vaga'
             }
           }
 
@@ -26,6 +26,7 @@ pipeline {
 
         stage('Checkstyle') {
           steps {
+                checkout scm
                 sh 'npm install'
                 sh 'npm install -g jshint'
                 sh 'jshint --verbose --reporter=checkstyle src > checkstyle-jshint.xml || exit 0'
