@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from "react-router-dom";
 
 import ConectarApi from "../../services/ConectarApi";
+import Axios from "axios";
 
 import calculaSerieEnsino from '../../utils/CalculaSerieEnsino';
 import SelectData from '../../utils/SelectData';
@@ -9,14 +10,16 @@ import GetEnderecoAutocomplete from '../../utils/GetEnderecoAutocomplete'
 import TrataErros from '../../utils/TrataErros'
 
 let API_ENDERECO = "REPLACE_API_ENDERECO";
+const MINIMO_CARACTERES_BUSCA = 4;
+const ATRASO_BUSCA_MS = 500;
 
 if (process.env.REACT_APP_NODE_ENV === "local") {
     API_ENDERECO = process.env.REACT_APP_API_ENDERECO;
 }
 
 // Simulando um Helper
-const isButtonDisabled = (texto) => {
-    return texto.length < 5
+const isButtonDisabled = (texto, latitude, longitude) => {
+    return texto.trim().length < 5 || latitude === '' || longitude === '';
 }
 
 class Busca extends React.Component {
@@ -42,8 +45,22 @@ class Busca extends React.Component {
         this.setAtributosCampos = this.setAtributosCampos.bind(this);
         this.setInputEndereco = this.setInputEndereco.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.buscaAtual = 0;
+        this.termoAtual = '';
 
     }
+
+    componentWillUnmount() {
+        this.cancelarBusca();
+    }
+
+    cancelarBusca = () => {
+        clearTimeout(this.buscaTimeout);
+        this.buscaAtual += 1;
+        if (this.buscaCancelamento) {
+            this.buscaCancelamento.cancel();
+        }
+    };
 
     setAtributosCampos = (attribute, value) => {
         this.setState({[attribute]: value}, () => {
@@ -73,39 +90,70 @@ class Busca extends React.Component {
     }
 
     handleChange(event) {
-        // Para montar o autocomplete
         const endereco_pesquisado = event.target.value;
-        const endereco_api_consulta = `${API_ENDERECO}/v1/search?text=${endereco_pesquisado}&size=10&boundary.gid=whosonfirst:locality:101965533`
+        const termo = endereco_pesquisado.trim();
         this.setState({endereco: endereco_pesquisado});
         localStorage.setItem('endereco', endereco_pesquisado);
 
-        ConectarApi.logarSemAutenticacao(endereco_api_consulta, 'get')
-
-            .then(resposta => {
-
-                this.setState({enderecos_retornados: resposta.data.features});
-
-                if (resposta.data.features.length > 0) {
-
-                    this.setState({input_endereco_round_css: ' input_endereco_round_css'})
-                    this.setState({popupVisible: 'd-md-block'})
-
-                    this.setState({longitude: resposta.data.features[0].geometry.coordinates[0]})
-                    this.setState({latitude: resposta.data.features[0].geometry.coordinates[1]})
-
-                    localStorage.setItem('longitude', resposta.data.features[0].geometry.coordinates[0]);
-                    localStorage.setItem('latitude', resposta.data.features[0].geometry.coordinates[1]);
-                }
-
-            }).catch(erro => {
+        if (termo === this.termoAtual) {
+            return;
+        }
+        this.termoAtual = termo;
+        this.cancelarBusca();
+        this.setState({
+            enderecos_retornados: [],
+            bairro: '',
+            latitude: '',
+            longitude: '',
+            input_endereco_round_css: '',
+            popupVisible: 'd-none',
         });
+        localStorage.removeItem('longitude');
+        localStorage.removeItem('latitude');
 
+        if (termo.length < MINIMO_CARACTERES_BUSCA) {
+            return;
+        }
+        const buscaAtual = this.buscaAtual;
+        this.buscaTimeout = setTimeout(
+            () => this.buscarEndereco(termo, buscaAtual),
+            ATRASO_BUSCA_MS
+        );
+    }
 
-
-
+    buscarEndereco(termo, buscaAtual) {
+        this.buscaCancelamento = Axios.CancelToken.source();
+        const endereco_api_consulta = `${API_ENDERECO}/v1/search?text=${encodeURIComponent(termo)}&size=10&boundary.gid=whosonfirst:locality:101965533`;
+        return ConectarApi.logarSemAutenticacao(endereco_api_consulta, 'get', null, {
+            cancelToken: this.buscaCancelamento.token,
+        }).then(resposta => {
+            if (buscaAtual !== this.buscaAtual) {
+                return;
+            }
+            const enderecos = resposta.data.features;
+            const coordenadas = enderecos.length > 0
+                ? enderecos[0].geometry.coordinates
+                : ['', ''];
+            this.setState({
+                enderecos_retornados: enderecos,
+                input_endereco_round_css: enderecos.length > 0 ? ' input_endereco_round_css' : '',
+                popupVisible: enderecos.length > 0 ? 'd-md-block' : 'd-none',
+                longitude: coordenadas[0],
+                latitude: coordenadas[1],
+            });
+            if (enderecos.length > 0) {
+                localStorage.setItem('longitude', coordenadas[0]);
+                localStorage.setItem('latitude', coordenadas[1]);
+            }
+        }).catch(() => {
+            // Os resultados e coordenadas foram limpos ao alterar o termo.
+        });
     }
 
     setInputEndereco = (logradouro, bairro, longitude, latitude) => {
+        this.cancelarBusca();
+        this.termoAtual = (bairro ? `${logradouro} - ${bairro}` : logradouro).trim();
+        this.setState({bairro: bairro || ''});
 
         if (bairro) {
             this.setState({endereco: `${logradouro} - ${bairro}`})
@@ -129,6 +177,9 @@ class Busca extends React.Component {
     };
 
     render() {
+        const consultaDesabilitada = isButtonDisabled(
+            this.state.endereco, this.state.latitude, this.state.longitude
+        );
 
         return (
             <div id="busca" className="col-lg-12 col-sm-12 mt-5 pr-0 pl-0">
@@ -163,6 +214,11 @@ class Busca extends React.Component {
                         <div className="form-group col-lg-2 text-center text-lg-left">
 
                             <Link
+                                onClick={event => {
+                                    if (consultaDesabilitada) {
+                                        event.preventDefault();
+                                    }
+                                }}
                                 to={{
                                     pathname: "/creches",
                                     params: {
@@ -177,9 +233,9 @@ class Busca extends React.Component {
                                 <button
                                     type="button"
                                     className={
-                                        `btn btn-${this.state.endereco.length < 5 ? 'secondary' : 'success'} btn-lg rounded-pill shadow btn-enviar-home fonte-16 font-weight-bold pl-4 pr-4`
+                                        `btn btn-${consultaDesabilitada ? 'secondary' : 'success'} btn-lg rounded-pill shadow btn-enviar-home fonte-16 font-weight-bold pl-4 pr-4`
                                     }
-                                    disabled={isButtonDisabled(this.state.endereco)}
+                                    disabled={consultaDesabilitada}
                                 >
                                     Consultar
                                 </button>
