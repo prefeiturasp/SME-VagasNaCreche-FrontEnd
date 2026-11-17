@@ -2,9 +2,10 @@ import Axios from "axios";
 
 const ConectarApi = {
 
-    logarSemAutenticacao(endereco, verbo, dados=null) {
+    logarSemAutenticacao(endereco, verbo, dados=null, configuracao={}) {
 
         const options = {
+            ...configuracao,
             method: verbo,
             url: endereco,
             data: dados,
